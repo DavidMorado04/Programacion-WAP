@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso Restringido</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600&display=swap');
+
+        :root {
+            --bg-base: #030712; 
+            --neon-red: #ff3333; 
+            --neon-cyan: #00f0ff;
+            --text-main: #e2e8f0; 
+            --font-tech: 'Fira Code', monospace; 
+            --font-body: 'Inter', sans-serif; 
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(255, 51, 51, 0.08), transparent 50%),
+                linear-gradient(rgba(255, 51, 51, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 51, 51, 0.03) 1px, transparent 1px);
+            background-size: 100% 100%, 30px 30px, 30px 30px;
+        }
+
+        .warning-box {
+            background: rgba(20, 5, 5, 0.8);
+            border: 1px solid var(--neon-red);
+            padding: 4rem;
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(255, 51, 51, 0.2);
+            backdrop-filter: blur(10px);
+            max-width: 600px;
+        }
+
+        h1 {
+            font-family: var(--font-tech);
+            color: var(--neon-red);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(255, 51, 51, 0.5);
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: #94a3b8;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .btn-back {
+            display: inline-block;
+            background: transparent;
+            color: var(--neon-cyan);
+            border: 2px solid var(--neon-cyan);
+            font-family: var(--font-tech);
+            font-weight: 600;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .btn-back:hover {
+            background: var(--neon-cyan);
+            color: #000;
+            box-shadow: 0 0 20px var(--neon-cyan);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="warning-box">
+        <h1>⚠️ ACCESO RESTRINGIDO</h1>
+        <p>El sistema indica que aún no llegamos hasta esta fase del semestre. La información será desbloqueada a su debido tiempo.</p>
+        
+        <!-- Los dos puntos "../" le dicen al botón que salga de la carpeta y busque el index.html principal -->
+        <a href="../index.html" class="btn-back">&lt;- VOLVER AL INICIO</a>
+    </div>
+
+</body>
+</html>
