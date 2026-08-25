@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte Actividad 03 | CNO IV</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600&display=swap');
+
+        :root {
+            --bg-base: #0a0d14; 
+            --neon-cyan: #00f0ff; 
+            --neon-purple: #b026ff;
+            --dark-purple: #9d00ff; 
+            --dark-purple-glow: rgba(157, 0, 255, 0.7);
+            --hover-violet: #d8b4fe; 
+            --neon-gold: #ffd700;
+            --text-main: #e2e8f0; 
+            --text-muted: #8b949e; 
+            --font-tech: 'Fira Code', monospace; 
+            --font-body: 'Inter', sans-serif; 
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(ellipse at 0% 0%, rgba(176, 38, 255, 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 100% 0%, rgba(0, 240, 255, 0.10) 0%, transparent 50%),
+                radial-gradient(ellipse at 100% 100%, rgba(255, 138, 0, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 0% 100%, rgba(0, 102, 255, 0.12) 0%, transparent 50%);
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ================= ENCABEZADO ================= */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.5rem 4%; background: rgba(10, 13, 20, 0.7);
+            backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            position: fixed; width: 100%; top: 0; z-index: 100;
+        }
+        .logo-area h1 { font-family: var(--font-tech); font-size: 1.1rem; color: var(--text-main); }
+        .logo-area span { color: var(--neon-cyan); }
+        
+        .nav-container { display: flex; align-items: center; gap: 2rem; }
+        .nav-inicio { color: var(--text-main); text-decoration: none; font-family: var(--font-tech); transition: color 0.3s; position: relative; }
+        .nav-inicio:hover { color: var(--hover-violet); }
+        
+        .dropdown { position: relative; display: inline-block; }
+        .dropbtn { background: transparent; color: var(--text-main); font-family: var(--font-tech); font-size: 1.5rem; border: none; cursor: pointer; padding: 0.5rem; transition: color 0.3s; }
+        .dropbtn:hover { color: var(--hover-violet); }
+        
+        .dropdown-content {
+            display: none; position: absolute; right: 0;
+            background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(10px);
+            min-width: 200px; box-shadow: 0px 8px 20px 0px rgba(0,0,0,0.6);
+            border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; z-index: 1; padding: 0.5rem 0;
+        }
+        .dropdown-content a { color: var(--text-muted); padding: 12px 20px; text-decoration: none; display: block; font-family: var(--font-tech); transition: color 0.3s, background 0.3s; position: relative; }
+        .dropdown:hover .dropdown-content { display: block; }
+        .dropdown-content a:hover { color: var(--hover-violet); background: rgba(216, 180, 254, 0.05); }
+        .dropdown-content a::after {
+            content: ''; position: absolute; width: 0; height: 2px; bottom: 8px; left: 20px;
+            background-color: var(--dark-purple); box-shadow: 0 0 10px var(--dark-purple-glow); transition: width 0.3s ease;
+        }
+        .dropdown-content a:hover::after { width: calc(100% - 40px); }
+
+        /* ================= CONTENIDO DEL REPORTE ================= */
+        main {
+            flex: 1;
+            padding: 10rem 2rem 4rem; 
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .report-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .report-header h2 {
+            font-family: var(--font-tech);
+            color: var(--neon-cyan);
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            text-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+            margin-bottom: 0.5rem;
+        }
+
+        .report-header .subtitle {
+            color: var(--neon-purple);
+            font-family: var(--font-tech);
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+        }
+
+        /* ===== CONTENEDOR DE SECCIÓN (REPORTE) ===== */
+        .report-section {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.6) 0%, rgba(5, 9, 20, 0.7) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-left: 3px solid var(--neon-cyan);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .report-section:hover {
+            box-shadow: 0 5px 20px rgba(0, 240, 255, 0.1);
+        }
+
+        .report-section h3 {
+            font-family: var(--font-tech);
+            color: #fff;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .report-section h3::before {
+            content: '>';
+            color: var(--neon-cyan);
+        }
+
+        .report-section h4 {
+            font-family: var(--font-tech);
+            color: var(--neon-purple);
+            font-size: 1.1rem;
+            margin: 1.5rem 0 0.5rem 0;
+        }
+
+        .report-section p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        /* Estilos para las imágenes de evidencia */
+        .evidencia-img {
+            width: 100%;
+            max-width: 100%;
+            border-radius: 8px;
+            border: 1px solid var(--neon-cyan);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
+            margin: 1.5rem 0 0.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .evidencia-img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.3);
+        }
+
+        .caption {
+            text-align: center;
+            font-family: var(--font-tech);
+            font-size: 0.85rem;
+            color: var(--hover-violet);
+            margin-bottom: 1.5rem;
+        }
+
+        /* ===== ESTILO DE LA TERMINAL DE CONCLUSIÓN ===== */
+        .terminal-box {
+            background: rgba(10, 7, 16, 0.9);
+            border: 1px solid var(--neon-purple);
+            border-radius: 10px;
+            padding: 3rem 2rem 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            box-shadow: 0 0 20px rgba(176, 38, 255, 0.15);
+        }
+        
+        .terminal-buttons {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            display: flex;
+            gap: 8px;
+        }
+        
+        .terminal-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-content {
+            border: 1px solid rgba(176, 38, 255, 0.3);
+            padding: 1.5rem;
+            border-radius: 6px;
+        }
+
+        .terminal-content p {
+            font-family: var(--font-tech);
+            font-size: 0.95rem;
+            color: var(--text-main);
+            margin-bottom: 1.2rem;
+        }
+        
+        .terminal-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ===== SECCIÓN DATOS DE LA ACTIVIDAD (METADATA) ===== */
+        .meta-data-box {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px dashed rgba(255, 215, 0, 0.4);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-top: 3rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .meta-label {
+            font-family: var(--font-tech);
+            color: var(--neon-gold);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        .meta-value {
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .btn-back {
+            display: inline-block;
+            margin-top: 2rem;
+            color: var(--neon-cyan);
+            text-decoration: none;
+            font-family: var(--font-tech);
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .btn-back:hover {
+            color: #fff;
+            text-shadow: 0 0 10px var(--neon-cyan);
+        }
+
+        /* ================= FOOTER ================= */
+        footer { text-align: center; padding: 2rem; background: rgba(10, 13, 20, 0.6); border-top: 1px solid rgba(255, 255, 255, 0.05); }
+        footer p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 0.5rem; font-family: var(--font-body); }
+        footer p strong { color: #fff; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <h1>UPSLP <span>|</span> CNO IV - Programación WAP</h1>
+        </div>
+        <nav class="nav-container">
+            <a href="../index.html" class="nav-inicio">Inicio</a>
+            <div class="dropdown">
+                <button class="dropbtn">&#9776;</button>
+                <div class="dropdown-content">
+                    <a href="index.html">1er Parcial</a> 
+                    <a href="../Parcial_2/index.html">2do Parcial</a>
+                    <a href="../Parcial_3/index.html">3er Parcial</a>
+                    <a href="../Final/index.html">Final</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="report-header">
+            <h2>REPORTE TÉCNICO</h2>
+            <div class="subtitle">ACTIVIDAD 03: NO PRESIONES ESC... TODAVÍA</div>
+        </div>
+
+        <!-- 1. OBJETIVO -->
+        <div class="report-section">
+            <h3>Objetivo de la Actividad</h3>
+            <p>Implementar y documentar en un entorno de laboratorio controlado un programa basado en <em>event hooks</em> y <em>callbacks</em>. El objetivo es registrar eventos de teclado, asociarlos temporalmente y transmitir la telemetría hacia un receptor para comprender el funcionamiento técnico de esta técnica y reconocer sus implicaciones dentro de la ciberseguridad.</p>
+        </div>
+
+        <!-- 2. DESARROLLO DEL CÓDIGO -->
+        <div class="report-section">
+            <h3>1. Desarrollo del Código (Asociación Temporal)</h3>
+            <p>A continuación se presenta el código fuente desarrollado. Se implementó la lógica para capturar los eventos y formatearlos con una marca de fecha y hora exacta (ej. <code>2026-08-18 12:15:04.215 | PRESS | evento_001</code>).</p>
+            
+            <h4>Código - Parte 1</h4>
+            <!-- Asegúrate de tener esta imagen guardada en tu carpeta Parcial_1 -->
+            <img src="tarea_3_codigo_parte_1.jpeg" alt="Primera parte del código fuente" class="evidencia-img">
+            <div class="caption">[ FIGURA 1: Declaración de variables y configuración de los event hooks. ]</div>
+
+            <h4>Código - Parte 2</h4>
+            <!-- Asegúrate de tener esta imagen guardada en tu carpeta Parcial_1 -->
+            <img src="tarea_3_codigo_parte_2.jpeg" alt="Segunda parte del código fuente" class="evidencia-img">
+            <div class="caption">[ FIGURA 2: Lógica de callbacks y estructuración de la asociación temporal. ]</div>
+        </div>
+
+        <!-- 3. EJECUCIÓN -->
+        <div class="report-section">
+            <h3>2. Ejecución y Envío de Telemetría</h3>
+            <p>En esta captura se muestra la ejecución del programa desde la terminal. Los eventos capturados se procesan para su envío controlado, cumpliendo con el requerimiento de transmisión de telemetría.</p>
+            
+            <!-- Asegúrate de tener esta imagen guardada en tu carpeta Parcial_1 -->
+            <img src="tarea_3_terminal.jpeg" alt="Ejecución del programa en la terminal" class="evidencia-img">
+            <div class="caption">[ FIGURA 3: Interfaz de terminal mostrando el programa en ejecución. ]</div>
+        </div>
+
+        <!-- 4. PERSISTENCIA -->
+        <div class="report-section">
+            <h3>3. Persistencia del Registro</h3>
+            <p>Finalmente, se evidencia la persistencia de los registros. El programa almacena de manera exitosa los eventos generados durante la ejecución en un archivo local, manteniendo el orden cronológico y el tiempo transcurrido entre eventos.</p>
+            
+            <!-- Asegúrate de tener esta imagen guardada en tu carpeta Parcial_1 -->
+            <img src="tarea_3_archivo.jpeg" alt="Archivo de registro local" class="evidencia-img">
+            <div class="caption">[ FIGURA 4: Archivo local (log) con los registros persistentes y sus marcas de tiempo. ]</div>
+        </div>
+
+        <!-- 5. CONCLUSIÓN (Diseño integrado al portafolio) -->
+        <div class="report-section">
+            <h3>Conclusión de la Actividad</h3>
+            
+            <p>El desarrollo de esta práctica me permitió comprender de primera mano cómo operan los mecanismos de intercepción a nivel de sistema operativo. Al implementar <em>event hooks</em> y funciones de <em>callback</em> mediante Python, pude observar la facilidad con la que se pueden vulnerar las entradas de hardware si un equipo carece de monitoreo avanzado.</p>
+            
+            <p>La integración de la persistencia de datos y la transmisión de telemetría hacia la máquina de <strong>Kali Linux</strong> fue clave para entender la anatomía completa de este vector. Demostró que el verdadero riesgo no solo radica en capturar la información, sino en la capacidad de estructurarla con una asociación temporal exacta y exfiltrarla de manera totalmente silenciosa.</p>
+            
+            <p>Como estudiante de Tecnologías de la Información, realizar este tipo de desarrollos ofensivos en un entorno de laboratorio controlado es fundamental. Comprender el código que da vida a estas herramientas me proporciona una perspectiva técnica mucho más amplia para configurar y entender cómo las soluciones defensivas (como los sistemas EDR) analizan procesos anómalos para proteger los endpoints corporativos.</p>
+        </div>
+
+        <!-- 6. ENTREGABLES Y CÓDIGO FUENTE -->
+        <div class="report-section" style="border-left-color: var(--neon-gold);">
+            <h3 style="color: var(--neon-gold);">Archivos Adjuntos (Entregables)</h3>
+            <p>Para cumplir con los requerimientos de auditoría y revisión de código, a continuación se adjuntan los archivos correspondientes a la práctica:</p>
+            
+            <div style="display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap;">
+                <a href="TAREA3.py" download class="btn-back" style="border: 1px solid var(--neon-cyan); padding: 0.8rem 1.5rem; border-radius: 6px; margin-top: 0;">
+                    Descargar Código Fuente (.py)
+                </a>
+                
+                <a href="Presentacion_Act03.pdf" target="_blank" class="btn-back" style="border: 1px solid var(--neon-purple); padding: 0.8rem 1.5rem; border-radius: 6px; margin-top: 0; color: var(--neon-purple);">
+                    Ver Informe / Presentación (.pdf)
+                </a>
+            </div>
+        </div>
+
+        <!-- 7. DATOS DE LA ACTIVIDAD -->
+        <div class="meta-data-box">
+            <div class="meta-item">
+                <span class="meta-label">Asignatura</span>
+                <span class="meta-value">CNO IV – Seguridad Informática</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Duración Aproximada</span>
+                <span class="meta-value">01 hora y 30 minutos</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Tecnologías Base</span>
+                <span class="meta-value">Python · E/S de Archivos</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Docente</span>
+                <span class="meta-value">Mtro. Servando López Contreras</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Estudiante / Carrera</span>
+                <span class="meta-value">David Campos Morado (ITI)</span>
+            </div>
+        </div>
+
+        <a href="index.html" class="btn-back">&larr; Regresar a las actividades del Parcial</a>
+    </main>
+
+    <footer>
+        <p>🔒 Sitio web protegido con <strong>Certificado de Seguridad (HTTPS)</strong>.</p>
+        <p>&copy; 2026 David Campos Morado. CNO IV - Seguridad Informática.</p>
+    </footer>
+
+</body>
+</html>
