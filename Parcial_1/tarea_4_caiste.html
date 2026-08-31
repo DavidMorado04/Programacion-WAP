@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Sorpresa!</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Canvas Confetti library for the effect -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <style>
+        /* Custom animations */
+        @keyframes colorChange {
+            0% { color: #facc15; } /* yellow-400 */
+            33% { color: #f472b6; } /* pink-400 */
+            66% { color: #38bdf8; } /* sky-400 */
+            100% { color: #facc15; }
+        }
+        .animate-color-change {
+            animation: colorChange 3s infinite;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 min-h-screen flex flex-col items-center justify-center p-6 overflow-hidden">
+    
+    <div id="start-screen" class="z-20 flex flex-col items-center justify-center w-full h-full absolute inset-0 bg-gray-900">
+        <button id="start-btn" class="px-8 py-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold rounded-full text-2xl md:text-3xl hover:scale-110 transition-transform shadow-[0_0_20px_rgba(236,72,153,0.8)] animate-pulse">
+            Haz clic para terminar de completar el formulario  
+        </button>
+    </div>
+
+    <div id="main-content" class="relative z-10 flex flex-col items-center hidden opacity-0 transition-opacity duration-1000">
+        <h1 class="text-5xl md:text-7xl font-extrabold text-center mb-4 animate-bounce animate-color-change drop-shadow-lg">
+            ¡has sido hackeadoooo!
+        </h1>
+        
+        <h2 class="text-2xl md:text-3xl text-white font-bold text-center mb-8 tracking-wide">
+            ¡Gracias por entar a este link! 
+        </h2>
+
+        <div class="relative group cursor-pointer" id="image-container">
+            <div class="absolute -inset-1 bg-gradient-to-r from-pink-600 to-purple-600 rounded-xl blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+            <img src="imagenes/caiste.jpg" alt="Imagen de la broma" class="relative rounded-xl shadow-2xl max-w-full h-auto border-4 border-gray-800 object-cover" style="max-height: 50vh;">
+        </div>
+        <p class="text-gray-400 mt-4 text-sm">(Esto solo es una tarea"Pon mas atencion a las paginas que entras")</p>
+        <p class="text-gray-400 mt-4 text-sm">(Si quieres mas confeti picale a la imagen)</p>
+    </div>
+
+    <audio id="bg-music" loop>
+        <source src="https://upload.wikimedia.org/wikipedia/commons/4/43/Entry_of_the_Gladiators.ogg" type="audio/ogg">
+    </audio>
+
+    <script>
+        const startBtn = document.getElementById('start-btn');
+        const startScreen = document.getElementById('start-screen');
+        const mainContent = document.getElementById('main-content');
+        const bgMusic = document.getElementById('bg-music');
+        const imgContainer = document.getElementById('image-container');
+
+        // Función de confeti
+        function fireConfetti() {
+            var duration = 5 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                var particleCount = 50 * (timeLeft / duration);
+                confetti({
+                    ...defaults, 
+                    particleCount,
+                    origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+                });
+                confetti({
+                    ...defaults, 
+                    particleCount,
+                    origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+                });
+            }, 250);
+        }
+
+        // Iniciar la broma al hacer clic en el botón
+        startBtn.addEventListener('click', () => {
+            // Ocultar pantalla de inicio
+            startScreen.classList.add('hidden');
+            
+            // Mostrar contenido principal con un fade in
+            mainContent.classList.remove('hidden');
+            setTimeout(() => {
+                mainContent.classList.remove('opacity-0');
+                mainContent.classList.add('opacity-100');
+            }, 50);
+
+            // Reproducir la canción
+            bgMusic.volume = 0.5; // Ajustar volumen si es necesario
+            bgMusic.play();
+
+            // Explosión inicial de confeti
+            confetti({
+                particleCount: 150,
+                spread: 180,
+                origin: { y: 0.6 }
+            });
+
+            // Iniciar lluvia de confeti
+            setTimeout(fireConfetti, 500);
+        });
+        
+        // Clic en la imagen para más confeti
+        imgContainer.addEventListener('click', () => {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        });
+    </script>
+</body>
+</html>
