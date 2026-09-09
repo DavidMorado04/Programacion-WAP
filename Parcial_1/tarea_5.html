@@ -1,0 +1,358 @@
+<!-- Parcial_1/tarea_5.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte Actividad 05 | CNO IV - Programación WAP</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600&display=swap');
+
+        :root {
+            --bg-base: #0a0d14; 
+            --neon-cyan: #00f0ff; 
+            --neon-purple: #b026ff;
+            --dark-purple: #9d00ff; 
+            --dark-purple-glow: rgba(157, 0, 255, 0.7);
+            --hover-violet: #d8b4fe; 
+            --text-main: #e2e8f0; 
+            --text-muted: #8b949e; 
+            --font-tech: 'Fira Code', monospace; 
+            --font-body: 'Inter', sans-serif; 
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(ellipse at 0% 0%, rgba(176, 38, 255, 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 100% 0%, rgba(0, 240, 255, 0.10) 0%, transparent 50%),
+                radial-gradient(ellipse at 100% 100%, rgba(255, 138, 0, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 0% 100%, rgba(0, 102, 255, 0.12) 0%, transparent 50%);
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ================= ENCABEZADO IDÉNTICO ================= */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.5rem 4%; background: rgba(10, 13, 20, 0.7);
+            backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            position: fixed; width: 100%; top: 0; z-index: 100;
+        }
+        .logo-area h1 { font-family: var(--font-tech); font-size: 1.1rem; color: var(--text-main); }
+        .logo-area span { color: var(--neon-cyan); }
+        
+        .nav-container { display: flex; align-items: center; gap: 2rem; }
+        .nav-inicio { color: var(--text-main); text-decoration: none; font-family: var(--font-tech); transition: color 0.3s; position: relative; }
+        .nav-inicio:hover { color: var(--hover-violet); }
+        
+        .dropdown { position: relative; display: inline-block; }
+        .dropbtn { background: transparent; color: var(--text-main); font-family: var(--font-tech); font-size: 1.5rem; border: none; cursor: pointer; padding: 0.5rem; transition: color 0.3s; }
+        .dropbtn:hover { color: var(--hover-violet); }
+        
+        .dropdown-content {
+            display: none; position: absolute; right: 0;
+            background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(10px);
+            min-width: 200px; box-shadow: 0px 8px 20px 0px rgba(0,0,0,0.6);
+            border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; z-index: 1; padding: 0.5rem 0;
+        }
+        .dropdown-content a { color: var(--text-muted); padding: 12px 20px; text-decoration: none; display: block; font-family: var(--font-tech); transition: color 0.3s, background 0.3s; position: relative; }
+        .dropdown:hover .dropdown-content { display: block; }
+        .dropdown-content a:hover { color: var(--hover-violet); background: rgba(216, 180, 254, 0.05); }
+        .dropdown-content a::after {
+            content: ''; position: absolute; width: 0; height: 2px; bottom: 8px; left: 20px;
+            background-color: var(--dark-purple); box-shadow: 0 0 10px var(--dark-purple-glow); transition: width 0.3s ease;
+        }
+        .dropdown-content a:hover::after { width: calc(100% - 40px); }
+
+        /* ================= CONTENIDO PRINCIPAL ================= */
+        main {
+            flex: 1; padding: 8rem 2rem 4rem; max-width: 900px;
+            margin: 0 auto; width: 100%;
+        }
+
+        .main-title-container {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-family: var(--font-tech); color: var(--neon-cyan);
+            font-size: 2.5rem; text-transform: uppercase;
+            text-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle-activity {
+            font-family: var(--font-tech); color: var(--neon-purple);
+            font-size: 1.1rem; letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* ===== TARJETAS ESTILO TAREA 2 / 4 ===== */
+        .cyber-card {
+            position: relative;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(5, 9, 20, 0.9) 100%);
+            border: 1px solid rgba(0, 240, 255, 0.15); border-left: 4px solid var(--neon-cyan);
+            padding: 2.5rem; display: flex; flex-direction: column; gap: 1.5rem;
+            backdrop-filter: blur(10px); margin-bottom: 2.5rem;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%);
+        }
+
+        .back-link { display: inline-block; font-family: var(--font-tech); color: var(--neon-cyan); text-decoration: none; font-size: 1rem; transition: transform 0.3s; margin-bottom: 2rem; font-weight: bold; }
+        .back-link:hover { transform: translateX(-5px); text-shadow: 0 0 8px rgba(0, 240, 255, 0.4); }
+
+        .cyber-card h3 {
+            font-family: var(--font-tech); color: var(--neon-cyan);
+            font-size: 1.5rem; display: flex; align-items: center; gap: 10px;
+        }
+
+        .cyber-card p, .cyber-card li {
+            color: var(--text-muted); font-size: 1.05rem; line-height: 1.8;
+        }
+
+        .cyber-card ul {
+            padding-left: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem;
+        }
+
+        code { font-family: var(--font-tech); background: rgba(0, 240, 255, 0.1); color: var(--neon-cyan); padding: 2px 6px; border-radius: 4px; }
+
+        pre {
+            background: rgba(5, 9, 20, 0.95); border: 1px solid rgba(176, 38, 255, 0.3);
+            padding: 1.5rem; border-radius: 6px; overflow-x: auto;
+            font-family: var(--font-tech); color: var(--text-main); font-size: 0.9rem;
+            margin: 1rem 0; box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
+        }
+
+        /* ===== CAJAS DE RECURSOS (PDF Y VIDEO SOLITOS) ===== */
+        .pdf-download-box {
+            background: rgba(0, 240, 255, 0.05);
+            border: 1px dashed var(--neon-cyan);
+            padding: 1.5rem;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .pdf-download-box span {
+            font-family: var(--font-tech);
+            color: var(--text-main);
+            font-size: 0.95rem;
+        }
+
+        .cyber-button {
+            display: inline-flex; align-items: center; gap: 10px;
+            background: transparent; color: var(--neon-cyan);
+            border: 1px solid var(--neon-cyan); font-family: var(--font-tech);
+            font-weight: 600; padding: 0.8rem 1.5rem; text-decoration: none;
+            text-transform: uppercase; letter-spacing: 1.5px; transition: all 0.3s;
+        }
+        .cyber-button:hover { background: var(--neon-cyan); color: #000; box-shadow: 0 0 20px rgba(0, 240, 255, 0.4); }
+
+        /* ===== BLOQUE DE METADATA ===== */
+        .meta-grid-box {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(5, 9, 20, 0.95) 100%);
+            border: 1px dashed rgba(255, 138, 0, 0.3);
+            padding: 2.5rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .meta-item label {
+            display: block;
+            font-family: var(--font-tech);
+            font-size: 0.8rem;
+            color: #ffaa00;
+            letter-spacing: 1px;
+            margin-bottom: 0.3rem;
+            text-transform: uppercase;
+        }
+
+        .meta-item span {
+            font-family: var(--font-body);
+            font-size: 1.05rem;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .back-nav {
+            margin-top: 1rem;
+        }
+        .back-nav a {
+            font-family: var(--font-tech);
+            color: var(--neon-cyan);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+        .back-nav a:hover { color: var(--hover-violet); text-decoration: underline; }
+
+        /* ================= FOOTER ================= */
+        footer { text-align: center; padding: 2rem; background: rgba(10, 13, 20, 0.6); border-top: 1px solid rgba(255, 255, 255, 0.05); }
+        footer p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 0.5rem; font-family: var(--font-body); }
+        footer p strong { color: #fff; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <h1>UPSLP <span>|</span> CNO IV - Programación WAP</h1>
+        </div>
+        <nav class="nav-container">
+            <a href="../index.html" class="nav-inicio">Inicio</a>
+            <div class="dropdown">
+                <button class="dropbtn">&#9776;</button>
+                <div class="dropdown-content">
+                    <a href="index.html">1er Parcial</a>
+                    <a href="../Parcial_2/index.html">2do Parcial</a>
+                    <a href="../Parcial_3/index.html">3er Parcial</a>
+                    <a href="../Final/index.html">Final</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="main-title-container">
+            <h2 class="section-title">Reporte Técnico</h2>
+            <p class="subtitle-activity">Actividad 05: De la teoría a la práctica: Walkthrough en acción</p>
+        </div>
+
+        <!-- TARJETA 1: INTRODUCCIÓN -->
+        <div class="cyber-card">
+            <h3>> Introducción</h3>
+            <p>El desarrollo de esta actividad tiene como propósito demostrar la aplicación práctica de los conceptos teóricos de seguridad informática mediante un <em>walkthrough</em> técnico detallado[cite: 2]. A través de la evaluación de un entorno controlado en la máquina virtual "Snakeoil", se exploran metodologías orientadas a la identificación de vulnerabilidades web, la manipulación de peticiones en APIs REST y la extracción de información sensible[cite: 2].</p>
+        </div>
+
+        <!-- TARJETA 2: DESCRIPCIÓN DEL ESCENARIO Y LABORATORIO -->
+        <div class="cyber-card">
+            <h3>> Configuración del Escenario y Laboratorio</h3>
+            <p>La práctica se estructuró utilizando un entorno de pruebas aislado en Oracle VirtualBox mediante un adaptador de red tipo "Solo anfitrión" (Host-Only)[cite: 2]:</p>
+            <ul>
+                <li><strong>Segmento de Red:</strong> Segmento 192.168.56.0/24 con servidor DHCP activo[cite: 2].</li>
+                <li><strong>Máquina Atacante:</strong> Kali Linux (configurada en las IPs 192.168.56.3 y 192.168.56.4)[cite: 2].</li>
+                <li><strong>Máquina Víctima:</strong> Máquina virtual vulnerable "Snakeoil" operando en la dirección IP 192.168.56.5[cite: 2].</li>
+                <li><strong>Servicios Detectados:</strong> Tras el escaneo inicial, se identificaron servicios expuestos en los puertos 22 (OpenSSH) y los puertos 80 y 8080 (Nginx)[cite: 2].</li>
+            </ul>
+        </div>
+
+        <!-- TARJETA 3: EVIDENCIAS Y COMANDOS DE EJECUCIÓN -->
+        <div class="cyber-card">
+            <h3>> Evidencias y Comandos de Ejecución</h3>
+            <p>Durante el proceso de auditoría y explotación del objetivo, se ejecutaron las siguientes herramientas y comandos principales:</p>
+            <ul>
+                <li>
+                    <strong>Descubrimiento de Red (Netdiscover):</strong> Comando utilizado para escanear y localizar de manera dinámica la IP de la máquina víctima en la red interna aislada.
+                    <pre><code>netdiscover -r 192.168.56.0/24</code></pre>
+                </li>
+                <li>
+                    <strong>Escaneo de Puertos y Servicios (Nmap):</strong> Análisis detallado para identificar versiones de software y servicios activos en el objetivo.
+                    <pre><code>nmap -sC -sV 192.168.56.5</code></pre>
+                </li>
+                <li>
+                    <strong>Enumeración de Directorios Web (Gobuster):</strong> Herramienta empleada para mapear los endpoints ocultos de la API en el puerto 8080, localizando rutas críticas como <code>/users</code>, <code>/registration</code>, <code>/login</code>, <code>/secret</code> y <code>/run</code>[cite: 2].
+                    <pre><code>gobuster dir -u http://192.168.56.5:8080 -w /usr/share/wordlists/dirb/common.txt</code></pre>
+                </li>
+                <li>
+                    <strong>Manipulación y Proxy (Burp Suite):</strong> Se interceptó la petición hacia <code>/registration</code> que arrojaba un error <code>Wrong Method!!!</code> al intentar consultarla por GET, enviándola al <em>Repeater</em> para forzar el verbo HTTP a <code>POST</code>[cite: 2].
+                </li>
+                <li>
+                    <strong>Explotación y Extracción de Secretos:</strong> Al inyectar un payload URL-encoded con las credenciales (<code>username=morado&password=morado4</code>), se obtuvieron tokens JWT y se forzó la exposición de fragmentos del código fuente del backend (<code>app.py</code>)[cite: 2]:
+                </li>
+            </ul>
+            <pre><code>app = Flask(__name__)
+api = Api(app)
+app.config['SECRET_KEY'] = 'snakeoilisnotgoodforcorporations'
+app.config['JWT_COOKIE_SECURE'] = True
+app.config['JWT_SECRET_KEY'] = 'NOreasonableDOUBTthisPASSWORDisGOOD'
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=15)
+app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(hours=1)
+app.config['JWT_TOKEN_LOCATION'] = ['cookies']
+app.config['JWT_COOKIE_CSRF_PROTECT'] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False</code></pre>
+        </div>
+
+        <!-- TARJETA 4: CONTROLES DE SEGURIDAD Y CONCLUSIÓN -->
+        <div class="cyber-card">
+            <h3>> Controles de Seguridad y Conclusión</h3>
+            <p>Para mitigar las vulnerabilidades expuestas en este tipo de arquitecturas, se proponen los siguientes controles defensivos:</p>
+            <ul>
+                <li><strong>Control de Acceso Basado en Roles (RBAC):</strong> Restringir el acceso a endpoints sensibles de registro y administración para evitar altas de usuarios sin autorización[cite: 2].</li>
+                <li><strong>Sanitización y Validación de Entradas:</strong> Asegurar un correcto filtrado en el backend que valide adecuadamente los métodos y verbos HTTP permitidos[cite: 2].</li>
+                <li><strong>Protección de Secretos:</strong> Mantener las claves maestras y configuraciones críticas (<code>SECRET_KEY</code>) fuera del código fuente, utilizándose mediante variables de entorno seguras[cite: 2].</li>
+            </ul>
+            <p style="margin-top: 1rem;"><strong>Conclusión:</strong> La práctica demostró con éxito que cuando los mecanismos de fuerza bruta estricta fallan debido a la alta complejidad algorítmica (como PBKDF2), la revisión lógica de las aplicaciones web y la manipulación de peticiones mediante proxies facilitan rutas alternativas de intrusión y auditoría[cite: 2].</p>
+        </div>
+
+        <!-- RECURSOS SOLITOS: 1. PDF Y 2. VIDEO -->
+        <div class="pdf-download-box">
+            <span>📄 Descargar Reporte Completo (PDF Guía)</span>
+            <a href="De_la_teoría_a_la_práctica_walkthrough_en_acción_183511.pdf" class="cyber-button" download>Descargar PDF</a>
+        </div>
+        
+        <div class="pdf-download-box">
+            <span>🎬 Ver Video Explicativo del Walkthrough</span>
+            <a href="https://www.youtube.com/watch?v=AQU_LINK_DEL_VIDEO" target="_blank" class="cyber-button">Ver Video</a>
+        </div>
+
+        <!-- BLOQUE DE METADATA -->
+        <div class="meta-grid-box">
+            <div class="meta-item">
+                <label>Asignatura</label>
+                <span>CNO IV – Seguridad Informática</span>
+            </div>
+            <div class="meta-item">
+                <label>Duración Aproximada</label>
+                <span>07 horas[cite: 2]</span>
+            </div>
+            <div class="meta-item">
+                <label>Tecnologías Base</label>
+                <span>Walkthrough · Burp Suite · Nmap · Flask[cite: 2]</span>
+            </div>
+            <div class="meta-item">
+                <label>Servidor / Host</label>
+                <span>GitHub Pages</span>
+            </div>
+            <div class="meta-item">
+                <label>Docente</label>
+                <span>Mtro. Servando López Contreras[cite: 2]</span>
+            </div>
+            <div class="meta-item">
+                <label>Estudiante</label>
+                <span>David Campos Morado - 183511[cite: 2]</span>
+            </div>
+            <div class="meta-item" style="grid-column: 1 / -1;">
+                <label>Fecha Límite de Entrega</label>
+                <span style="color: var(--neon-cyan);">09/09/2026 4:00 a.m.</span>
+            </div>
+        </div>
+
+        <div class="back-nav">
+            <a href="index.html">&larr; Regresar a las actividades del Parcial</a>
+        </div>
+    </main>
+
+    <footer>
+        <p><strong>Sitio web protegido con Certificado de Seguridad (HTTPS)</strong>.</p>
+        <p><strong>&copy; 2026 David Campos Morado. CNO IV - Seguridad Informática</strong></p>
+    </footer>
+
+</body>
+</html>

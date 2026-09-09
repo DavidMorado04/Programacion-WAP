@@ -1,3 +1,4 @@
+<!-- Parcial_1/index.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -39,7 +40,6 @@
             min-height: 100vh;
         }
 
-        /* ================= ENCABEZADO ================= */
         header {
             display: flex; justify-content: space-between; align-items: center;
             padding: 1.5rem 4%; background: rgba(10, 13, 20, 0.7);
@@ -72,7 +72,6 @@
         }
         .dropdown-content a:hover::after { width: calc(100% - 40px); }
 
-        /* ================= CONTENIDO PARCIAL 1 ================= */
         main {
             flex: 1; padding: 8rem 2rem 4rem; max-width: 900px;
             margin: 0 auto; width: 100%;
@@ -86,7 +85,6 @@
 
         .activities-grid { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
 
-        /* ===== TARJETAS CIBERNÉTICAS / FUTURISTAS ===== */
         .cyber-card {
             position: relative;
             background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(5, 9, 20, 0.9) 100%);
@@ -140,7 +138,6 @@
         .cyber-button:hover { background: var(--neon-cyan); color: #000; box-shadow: 0 0 20px rgba(0, 240, 255, 0.4); }
         .cyber-button:hover::after { transform: translateX(5px); }
 
-        /* ================= FOOTER ================= */
         footer { text-align: center; padding: 2rem; background: rgba(10, 13, 20, 0.6); border-top: 1px solid rgba(255, 255, 255, 0.05); }
         footer p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 0.5rem; font-family: var(--font-body); }
         footer p strong { color: #fff; font-weight: 600; }
@@ -201,7 +198,7 @@
                 </div>
             </div>
 
-            <!-- NUEVA TARJETA FUTURISTA ACTIVIDAD 04 -->
+            <!-- TARJETA FUTURISTA ACTIVIDAD 04 -->
             <div class="cyber-card">
                 <div class="card-header"><span>ACTIVIDAD_04</span></div>
                 <h3 class="card-title">Una página demasiado convincente</h3>
@@ -213,6 +210,21 @@
                 </div>
                 <div class="card-footer">
                     <a href="tarea_4.html" class="cyber-button">Mostrar tarea</a>
+                </div>
+            </div>
+
+            <!-- NUEVA TARJETA FUTURISTA ACTIVIDAD 05 -->
+            <div class="cyber-card">
+                <div class="card-header"><span>ACTIVIDAD_05</span></div>
+                <h3 class="card-title">De la teoría a la práctica: Walkthrough en acción</h3>
+                <p class="card-desc">Implementación y documentación técnica de un walkthrough sobre la máquina virtual Snakeoil, incluyendo reconocimiento de red, alteración de verbos HTTP con Burp Suite y extracción de tokens JWT.</p>
+                <div class="cyber-tags">
+                    <span class="cyber-tag">Walkthrough</span>
+                    <span class="cyber-tag">Burp_Suite</span>
+                    <span class="cyber-tag">API_REST</span>
+                </div>
+                <div class="card-footer">
+                    <a href="tarea_5.html" class="cyber-button">Mostrar tarea</a>
                 </div>
             </div>
 
