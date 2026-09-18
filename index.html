@@ -160,27 +160,52 @@
             .specs-list li { flex-direction: column; }
             .specs-list li::before { margin-right: 0; margin-bottom: 5px; }
         }
+        .nav-fame {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--neon-gold);
+            font-family: var(--font-tech);
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-decoration: none;
+            letter-spacing: 2px;
+            transition: all 0.4s ease;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+            white-space: nowrap;
+        }
+
+        .nav-fame:hover {
+            color: #ffffff;
+            text-shadow: 0 0 15px var(--neon-gold), 0 0 30px #ffffff, 0 0 40px var(--neon-gold);
+            /* Se mantiene el translateX para que no se mueva de su centro al escalar */
+            transform: translateX(-50%) scale(1.05); 
+        }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo-area">
-            <h1>UPSLP <span>|</span> CNO IV - Programación WAP</h1>
-        </div>
-        <nav class="nav-container">
-            <a href="#inicio" class="nav-inicio">Inicio</a>
-            <div class="dropdown">
-                <button class="dropbtn">&#9776;</button>
-                <div class="dropdown-content">
-                    <a href="Parcial_1/index.html">1er Parcial</a>
-                    <a href="Parcial_2/index.html">2do Parcial</a>
-                    <a href="Parcial_3/index.html">3er Parcial</a>
-                    <a href="Final/index.html">Final</a>
-                </div>
+<header>
+    <div class="logo-area">
+        <h1>UPSLP <span>|</span> CNO IV - Programación WAP</h1>
+    </div>
+    
+    <!-- ENLACE CENTRAL ROAD TO HALL OF FAME -->
+    <a href="road to hall of fame/road_to_hall_of_fame.html" class="nav-fame">ROAD TO HALL OF FAME</a>
+    
+    <nav class="nav-container">
+        <a href="index.html" class="nav-inicio">Inicio</a>
+        <div class="dropdown">
+            <button class="dropbtn">&#9776;</button>
+            <div class="dropdown-content">
+                <a href="Parcial_1/index.html">1er Parcial</a>
+                <a href="Parcial_2/index.html">2do Parcial</a>
+                <a href="Parcial_3/index.html">3er Parcial</a>
+                <a href="Final/index.html">Final</a>
             </div>
-        </nav>
-    </header>
+        </div>
+    </nav>
+</header>
 
     <section id="inicio" class="hero-section">
         <div class="reveal">

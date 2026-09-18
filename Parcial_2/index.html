@@ -3,16 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acceso Restringido</title>
+    <title>Primer Parcial | CNO IV - Programación WAP</title>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600&display=swap');
 
         :root {
-            --bg-base: #030712; 
-            --neon-red: #ff3333; 
-            --neon-cyan: #00f0ff;
+            --bg-base: #0a0d14; 
+            --neon-cyan: #00f0ff; 
+            --neon-purple: #b026ff;
+            --dark-purple: #9d00ff; 
+            --dark-purple-glow: rgba(157, 0, 255, 0.7);
+            --hover-violet: #d8b4fe; 
+            --neon-gold: #ffd700;
             --text-main: #e2e8f0; 
+            --text-muted: #8b949e; 
             --font-tech: 'Fira Code', monospace; 
             --font-body: 'Inter', sans-serif; 
         }
@@ -23,73 +28,179 @@
             background-color: var(--bg-base);
             color: var(--text-main);
             font-family: var(--font-body);
-            height: 100vh;
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(ellipse at 0% 0%, rgba(176, 38, 255, 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 100% 0%, rgba(0, 240, 255, 0.10) 0%, transparent 50%),
+                radial-gradient(ellipse at 100% 100%, rgba(255, 138, 0, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 0% 100%, rgba(0, 102, 255, 0.12) 0%, transparent 50%);
+            background-attachment: fixed;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            background-image: 
-                radial-gradient(circle at 50% 50%, rgba(255, 51, 51, 0.08), transparent 50%),
-                linear-gradient(rgba(255, 51, 51, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 51, 51, 0.03) 1px, transparent 1px);
-            background-size: 100% 100%, 30px 30px, 30px 30px;
+            min-height: 100vh;
         }
 
-        .warning-box {
-            background: rgba(20, 5, 5, 0.8);
-            border: 1px solid var(--neon-red);
-            padding: 4rem;
-            border-radius: 12px;
-            box-shadow: 0 0 30px rgba(255, 51, 51, 0.2);
-            backdrop-filter: blur(10px);
-            max-width: 600px;
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.5rem 4%; background: rgba(10, 13, 20, 0.7);
+            backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            position: fixed; width: 100%; top: 0; z-index: 100;
+        }
+        .logo-area h1 { font-family: var(--font-tech); font-size: 1.1rem; color: var(--text-main); }
+        .logo-area span { color: var(--neon-cyan); }
+        
+        .nav-container { display: flex; align-items: center; gap: 2rem; }
+        .nav-inicio { color: var(--text-main); text-decoration: none; font-family: var(--font-tech); transition: color 0.3s; position: relative; }
+        .nav-inicio:hover { color: var(--hover-violet); }
+        
+        .dropdown { position: relative; display: inline-block; }
+        .dropbtn { background: transparent; color: var(--text-main); font-family: var(--font-tech); font-size: 1.5rem; border: none; cursor: pointer; padding: 0.5rem; transition: color 0.3s; }
+        .dropbtn:hover { color: var(--hover-violet); }
+        
+        .dropdown-content {
+            display: none; position: absolute; right: 0;
+            background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(10px);
+            min-width: 200px; box-shadow: 0px 8px 20px 0px rgba(0,0,0,0.6);
+            border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; z-index: 1; padding: 0.5rem 0;
+        }
+        .dropdown-content a { color: var(--text-muted); padding: 12px 20px; text-decoration: none; display: block; font-family: var(--font-tech); transition: color 0.3s, background 0.3s; position: relative; }
+        .dropdown:hover .dropdown-content { display: block; }
+        .dropdown-content a:hover { color: var(--hover-violet); background: rgba(216, 180, 254, 0.05); }
+        .dropdown-content a::after {
+            content: ''; position: absolute; width: 0; height: 2px; bottom: 8px; left: 20px;
+            background-color: var(--dark-purple); box-shadow: 0 0 10px var(--dark-purple-glow); transition: width 0.3s ease;
+        }
+        .dropdown-content a:hover::after { width: calc(100% - 40px); }
+
+        main {
+            flex: 1; padding: 8rem 2rem 4rem; max-width: 900px;
+            margin: 0 auto; width: 100%;
         }
 
-        h1 {
+        .section-title {
+            font-family: var(--font-tech); color: var(--neon-cyan);
+            font-size: 2.5rem; text-align: center; margin-bottom: 3rem;
+            text-transform: uppercase; text-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+        }
+
+        .activities-grid { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
+
+        .cyber-card {
+            position: relative;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(5, 9, 20, 0.9) 100%);
+            border: 1px solid rgba(0, 240, 255, 0.15); border-left: 4px solid var(--neon-cyan);
+            padding: 2.5rem; display: flex; flex-direction: column; gap: 1.5rem;
+            backdrop-filter: blur(10px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%);
+        }
+
+        .cyber-card:hover {
+            transform: translateY(-8px); border-left: 4px solid var(--neon-purple);
+            border-color: rgba(176, 38, 255, 0.4); box-shadow: 0 15px 35px rgba(176, 38, 255, 0.2);
+        }
+
+        .cyber-card::before {
+            content: ''; position: absolute; top: 0; right: 0; width: 40px; height: 40px;
+            background: linear-gradient(225deg, rgba(0, 240, 255, 0.2) 50%, transparent 50%);
+            transition: background 0.4s;
+        }
+
+        .cyber-card:hover::before { background: linear-gradient(225deg, rgba(176, 38, 255, 0.3) 50%, transparent 50%); }
+
+        .card-header {
+            font-family: var(--font-tech); font-size: 0.9rem; color: var(--neon-cyan);
+            letter-spacing: 2px; display: flex; align-items: center;
+        }
+        .card-header::before { content: '[ SYS.LOG ]'; margin-right: 10px; color: var(--text-muted); }
+
+        .card-title { font-size: 2.2rem; color: #fff; font-weight: 600; }
+        .card-desc { color: var(--text-muted); font-size: 1.05rem; line-height: 1.7; }
+
+        .cyber-tags { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .cyber-tag {
+            background: transparent; border: 1px solid var(--neon-purple);
+            padding: 0.4rem 1rem; font-family: var(--font-tech); font-size: 0.8rem;
+            color: var(--hover-violet); text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: inset 0 0 10px rgba(176, 38, 255, 0.1);
+        }
+
+        .card-footer { margin-top: 1rem; display: flex; justify-content: flex-start; }
+
+        .cyber-button {
+            display: inline-flex; align-items: center; gap: 10px;
+            background: transparent; color: var(--neon-cyan);
+            border: 1px solid var(--neon-cyan); font-family: var(--font-tech);
+            font-weight: 600; padding: 0.8rem 1.5rem; text-decoration: none;
+            text-transform: uppercase; letter-spacing: 1.5px; transition: all 0.3s;
+            position: relative;
+        }
+        .cyber-button::after { content: '>>'; font-family: var(--font-tech); transition: transform 0.3s; }
+        .cyber-button:hover { background: var(--neon-cyan); color: #000; box-shadow: 0 0 20px rgba(0, 240, 255, 0.4); }
+        .cyber-button:hover::after { transform: translateX(5px); }
+
+        footer { text-align: center; padding: 2rem; background: rgba(10, 13, 20, 0.6); border-top: 1px solid rgba(255, 255, 255, 0.05); }
+        footer p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 0.5rem; font-family: var(--font-body); }
+        footer p strong { color: #fff; font-weight: 600; }
+                
+        .nav-fame {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--neon-gold);
             font-family: var(--font-tech);
-            color: var(--neon-red);
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            text-shadow: 0 0 10px rgba(255, 51, 51, 0.5);
-        }
-
-        p {
-            font-size: 1.1rem;
-            color: #94a3b8;
-            margin-bottom: 2rem;
-            line-height: 1.6;
-        }
-
-        .btn-back {
-            display: inline-block;
-            background: transparent;
-            color: var(--neon-cyan);
-            border: 2px solid var(--neon-cyan);
-            font-family: var(--font-tech);
+            font-size: 1.2rem;
             font-weight: 600;
-            padding: 1rem 2rem;
             text-decoration: none;
-            border-radius: 6px;
-            transition: all 0.3s;
+            letter-spacing: 2px;
+            transition: all 0.4s ease;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+            white-space: nowrap;
         }
 
-        .btn-back:hover {
-            background: var(--neon-cyan);
-            color: #000;
-            box-shadow: 0 0 20px var(--neon-cyan);
+        .nav-fame:hover {
+            color: #ffffff;
+            text-shadow: 0 0 15px var(--neon-gold), 0 0 30px #ffffff, 0 0 40px var(--neon-gold);
+            transform: translateX(-50%) scale(1.05); 
         }
     </style>
 </head>
 <body>
 
-    <div class="warning-box">
-        <h1>⚠️ ACCESO RESTRINGIDO</h1>
-        <p>El sistema indica que aún no llegamos hasta esta fase del semestre. La información será desbloqueada a su debido tiempo.</p>
-        
-        <!-- Los dos puntos "../" le dicen al botón que salga de la carpeta y busque el index.html principal -->
-        <a href="../index.html" class="btn-back">&lt;- VOLVER AL INICIO</a>
+<header>
+    <div class="logo-area">
+        <h1>UPSLP <span>|</span> CNO IV - Programación WAP</h1>
     </div>
+    
+    <!-- ENLACE CENTRAL CON RUTA CORREGIDA -->
+    <a href="../road to hall of fame/road_to_hall_of_fame.html" class="nav-fame">ROAD TO HALL OF FAME</a>
+    
+    <nav class="nav-container">
+        <a href="../index.html" class="nav-inicio">Inicio</a>
+        <div class="dropdown">
+            <button class="dropbtn">&#9776;</button>
+            <div class="dropdown-content">
+                <a href="../Parcial_1/index.html">1er Parcial</a> 
+                <a href="#">2do Parcial</a>
+                <a href="../Parcial_3/index.html">3er Parcial</a>
+                <a href="../Final/index.html">Final</a>
+            </div>
+        </div>
+    </nav>
+</header>
+
+    <main>
+        <h2 class="section-title">Segundo Parcial</h2>
+
+        <div class="activities-grid">
+            
+
+        </div>
+    </main>
+
+    <footer>
+        <p><strong>Sitio web protegido con Certificado de Seguridad (HTTPS)</strong>.</p>
+        <p><strong>&copy; 2026 David Campos Morado. CNO IV - Seguridad Informática</strong></p>
+    </footer>
 
 </body>
 </html>

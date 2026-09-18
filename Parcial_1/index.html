@@ -17,6 +17,7 @@
             --dark-purple-glow: rgba(157, 0, 255, 0.7);
             --hover-violet: #d8b4fe; 
             --text-main: #e2e8f0; 
+            --neon-gold: #ffd700;
             --text-muted: #8b949e; 
             --font-tech: 'Fira Code', monospace; 
             --font-body: 'Inter', sans-serif; 
@@ -141,27 +142,52 @@
         footer { text-align: center; padding: 2rem; background: rgba(10, 13, 20, 0.6); border-top: 1px solid rgba(255, 255, 255, 0.05); }
         footer p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 0.5rem; font-family: var(--font-body); }
         footer p strong { color: #fff; font-weight: 600; }
+
+        .nav-fame {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--neon-gold);
+            font-family: var(--font-tech);
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-decoration: none;
+            letter-spacing: 2px;
+            transition: all 0.4s ease;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+            white-space: nowrap;
+        }
+
+        .nav-fame:hover {
+            color: #ffffff;
+            text-shadow: 0 0 15px var(--neon-gold), 0 0 30px #ffffff, 0 0 40px var(--neon-gold);
+            transform: translateX(-50%) scale(1.05); 
+        }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo-area">
-            <h1>UPSLP <span>|</span> CNO IV - Programación WAP</h1>
-        </div>
-        <nav class="nav-container">
-            <a href="../index.html" class="nav-inicio">Inicio</a>
-            <div class="dropdown">
-                <button class="dropbtn">&#9776;</button>
-                <div class="dropdown-content">
-                    <a href="#">1er Parcial</a> 
-                    <a href="../Parcial_2/index.html">2do Parcial</a>
-                    <a href="../Parcial_3/index.html">3er Parcial</a>
-                    <a href="../Final/index.html">Final</a>
-                </div>
+<header>
+    <div class="logo-area">
+        <h1>UPSLP <span>|</span> CNO IV - Programación WAP</h1>
+    </div>
+    
+    <!-- ENLACE CENTRAL CON RUTA CORREGIDA -->
+    <a href="../road to hall of fame/road_to_hall_of_fame.html" class="nav-fame">ROAD TO HALL OF FAME</a>
+    
+    <nav class="nav-container">
+        <a href="../index.html" class="nav-inicio">Inicio</a>
+        <div class="dropdown">
+            <button class="dropbtn">&#9776;</button>
+            <div class="dropdown-content">
+                <a href="#">1er Parcial</a> 
+                <a href="../Parcial_2/index.html">2do Parcial</a>
+                <a href="../Parcial_3/index.html">3er Parcial</a>
+                <a href="../Final/index.html">Final</a>
             </div>
-        </nav>
-    </header>
+        </div>
+    </nav>
+</header>
 
     <main>
         <h2 class="section-title">Primer Parcial</h2>
