@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte Actividad 07 | File Path Traversal</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600;800&display=swap');
+
+        :root {
+            --bg-base: #050811; 
+            --cyber-teal: #00ffcc; 
+            --deep-blue: #0044ff;  
+            --locked-dark: #121b2b;
+            --locked-border: #233454;
+            --text-main: #e2e8f0; 
+            --text-muted: #94a3b8; 
+            --font-tech: 'Fira Code', monospace; 
+            --font-body: 'Inter', sans-serif; 
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            background-image: 
+                linear-gradient(rgba(5, 8, 17, 0.85), rgba(5, 8, 17, 0.95)),
+                radial-gradient(circle at top left, rgba(0, 255, 204, 0.05), transparent 40%);
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ================= ENCABEZADO ================= */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.5rem 4%; background: rgba(5, 8, 17, 0.8);
+            backdrop-filter: blur(15px); border-bottom: 1px solid rgba(0, 255, 204, 0.15);
+            position: fixed; width: 100%; top: 0; z-index: 100;
+        }
+        .logo-area h1 { font-family: var(--font-tech); font-size: 1.1rem; color: var(--text-main); }
+        .logo-area span { color: var(--cyber-teal); }
+        
+        .nav-container { display: flex; align-items: center; gap: 2rem; }
+        
+        .nav-inicio { 
+            color: var(--text-main); 
+            text-decoration: none; 
+            font-family: var(--font-tech); 
+            transition: color 0.3s; 
+        }
+        .nav-inicio:hover { color: var(--cyber-teal); }
+        
+        .btn-back-nav {
+            color: var(--cyber-teal); 
+            font-family: var(--font-tech);
+            text-decoration: none; 
+            border: 1px solid var(--cyber-teal);
+            padding: 0.6rem 1.2rem; 
+            border-radius: 4px; 
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            background: transparent;
+        }
+        .btn-back-nav:hover { 
+            background: rgba(0, 255, 204, 0.1); 
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.3); 
+        }
+
+        /* ================= CONTENIDO DEL REPORTE ================= */
+        main {
+            flex: 1;
+            padding: 10rem 2rem 4rem; 
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            margin-bottom: 4rem;
+            border-bottom: 1px solid rgba(0, 255, 204, 0.2);
+            padding-bottom: 3rem;
+        }
+        .breadcrumb {
+            font-family: var(--font-tech);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+        .act-badge {
+            display: inline-block; background: rgba(0, 255, 204, 0.1);
+            color: var(--cyber-teal); font-family: var(--font-tech);
+            padding: 0.3rem 0.8rem; border-left: 3px solid var(--cyber-teal);
+            margin-bottom: 1.5rem; font-size: 0.9rem; letter-spacing: 2px;
+        }
+        .hero-section h2 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 800;
+            color: #ffffff;
+            font-size: 4rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+        }
+        .hero-desc {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 800px;
+            line-height: 1.8;
+        }
+
+        /* ===== CONTENEDOR DE SECCIÓN ===== */
+        .report-section {
+            background: linear-gradient(135deg, rgba(10, 15, 30, 0.6) 0%, rgba(5, 8, 17, 0.8) 100%);
+            border: 1px solid var(--locked-border);
+            border-left: 3px solid var(--deep-blue);
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        .report-section:hover { box-shadow: 0 5px 25px rgba(0, 68, 255, 0.15); border-left-color: var(--cyber-teal); }
+
+        .report-section h3 {
+            font-family: var(--font-tech);
+            color: var(--cyber-teal);
+            font-size: 1.4rem;
+            margin-bottom: 1.2rem;
+            display: flex; align-items: center; gap: 10px;
+            border-bottom: 1px solid rgba(0, 255, 204, 0.1);
+            padding-bottom: 0.5rem;
+        }
+        .report-section h3::before { content: '>'; color: var(--deep-blue); font-weight: bold; }
+
+        .report-section p { margin-bottom: 1.2rem; text-align: justify; }
+
+        /* Bloques de Código/Comandos */
+        .code-block {
+            background: #000; border-left: 3px solid var(--deep-blue);
+            padding: 1rem; font-family: var(--font-tech); color: #fff;
+            overflow-x: auto; margin: 1.5rem 0; border-radius: 0 4px 4px 0;
+            font-size: 0.95rem;
+        }
+
+        /* Estilos para las imágenes de evidencia */
+        .img-container {
+            margin: 2rem 0; border: 1px solid var(--locked-border);
+            border-radius: 6px; overflow: hidden; background: #000;
+            padding: 0.5rem;
+        }
+        .evidencia-img { width: 100%; height: auto; display: block; border-radius: 4px; }
+        .caption {
+            text-align: center; font-family: var(--font-tech); font-size: 0.85rem;
+            color: var(--text-muted); padding-top: 0.8rem;
+        }
+
+        /* ===== SECCIÓN ARCHIVOS ADJUNTOS ===== */
+        .btn-download {
+            display: inline-block;
+            text-decoration: none;
+            font-family: var(--font-tech);
+            font-weight: 600;
+            color: var(--cyber-teal);
+            border: 1px solid var(--cyber-teal);
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            transition: all 0.3s;
+            background: transparent;
+        }
+        .btn-download:hover {
+            background: rgba(0, 255, 204, 0.1);
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+        }
+
+        /* ===== SECCIÓN DATOS DE LA ACTIVIDAD (METADATA) ===== */
+        .meta-data-box {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px dashed var(--locked-border);
+            border-radius: 8px; padding: 2rem; margin-top: 3rem;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;
+        }
+        .meta-item { display: flex; flex-direction: column; gap: 0.4rem; }
+        .meta-label { font-family: var(--font-tech); color: var(--cyber-teal); font-size: 0.85rem; text-transform: uppercase; }
+        .meta-value { color: #fff; font-size: 1rem; font-weight: 600; }
+
+        /* ================= FOOTER ================= */
+        footer { text-align: center; padding: 2rem; background: rgba(5, 8, 17, 0.8); border-top: 1px solid rgba(0, 255, 204, 0.1); margin-top: 4rem; }
+        footer p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 0.5rem; }
+        footer p strong { color: #fff; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <h1>UPSLP <span>|</span> CNO IV - Programación WAP</h1>
+        </div>
+        <nav class="nav-container">
+            <a href="../index.html" class="nav-inicio">Inicio</a>
+            <a href="road_to_hall_of_fame.html" class="btn-back-nav">&laquo; Volver al Roadmap</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- HERO SECTION -->
+        <div class="hero-section">
+            <div class="breadcrumb">PORTAFOLIO / ROAD TO HALL OF FAME / LAB 07</div>
+            <div class="act-badge">ACTIVIDAD 07</div>
+            <h2>Explotando un Path Traversal con Burp Suite</h2>
+            <p class="hero-desc">Documentación del laboratorio "File path traversal, simple case": interceptación de la solicitud, manipulación controlada del parámetro filename y validación del resultado.</p>
+        </div>
+
+        <!-- 1. OBJETIVO -->
+        <div class="report-section">
+            <h3>Objetivo del Laboratorio</h3>
+            <p>Identificar y explotar de manera controlada una vulnerabilidad de File Path Traversal presente en la carga de imágenes de una aplicación web. Mediante Burp Suite, se analizó y modificó una petición HTTP para manipular el parámetro <code>filename</code> utilizando secuencias de recorrido de directorios, con el objetivo de acceder al archivo <code>/etc/passwd</code> y comprobar la falta de validación adecuada de las rutas proporcionadas por el usuario.</p>
+        </div>
+
+        <!-- 2. MARCO TEÓRICO -->
+        <div class="report-section">
+            <h3>Marco Teórico y Fundamentación Técnica</h3>
+            <p>El <strong>File Path Traversal</strong> (también conocido como Directory Traversal) es una vulnerabilidad web que permite a un atacante leer archivos arbitrarios en el servidor que ejecuta la aplicación. Esto ocurre típicamente cuando una aplicación web utiliza parámetros enviados por el usuario (como el nombre de un archivo de imagen) para abrir o cargar un recurso sin validar o sanitizar la entrada previamente.</p>
+            <p><strong>Impacto (CIA):</strong> Esta vulnerabilidad afecta directamente a la <strong>Confidencialidad</strong> de la información. Mediante el uso de secuencias de escape como <code>../../../</code>, un atacante puede ascender desde la carpeta pública de la aplicación hasta la raíz del servidor, logrando acceder a archivos críticos del sistema (como <code>/etc/passwd</code> en Linux), código fuente o archivos de configuración con credenciales. Esto a menudo sirve como vector inicial para escalar privilegios o ejecutar código remotamente (RCE).</p>
+        </div>
+
+        <!-- 3. DESARROLLO Y PROCEDIMIENTO -->
+        <div class="report-section">
+            <h3>Desarrollo y Procedimiento</h3>
+            <p>El laboratorio se realizó en PortSwigger Web Security Academy utilizando Burp Suite Community Edition. Desde el navegador integrado de Burp Suite se accedió a la instancia del laboratorio y se analizaron las peticiones HTTP generadas por la aplicación.</p>
+            
+            <p>En <strong>Proxy > HTTP history</strong> se identificó que las imágenes de los productos eran solicitadas mediante peticiones GET al endpoint <code>/image</code>, utilizando el parámetro <code>filename</code> para especificar el archivo que debía recuperar el servidor. A partir de este comportamiento se seleccionó una de las peticiones para analizar y modificar su contenido.</p>
+
+            <p><strong>Análisis de la petición con Repeater:</strong> La petición seleccionada se envió al módulo Repeater, permitiendo modificar manualmente sus parámetros y reenviarla al servidor sin necesidad de generar nuevamente la solicitud desde el navegador.</p>
+
+            <div class="img-container">
+                <img src="Imagenes/req_interceptado.png" alt="Request interceptado en Burp Suite" class="evidencia-img">
+                <div class="caption">[ FIGURA 1: Petición HTTP GET original interceptada mostrando el parámetro filename. ]</div>
+            </div>
+        </div>
+
+        <!-- 4. EXPLOTACIÓN Y PAYLOAD -->
+        <div class="report-section">
+            <h3>Explotación y Análisis del Payload</h3>
+            <p>Dentro de Repeater se sustituyó el valor original de <code>filename</code> por el siguiente payload malicioso:</p>
+            
+            <div class="code-block">filename=../../../etc/passwd</div>
+
+            <p><strong>Explicación del payload:</strong></p>
+            <ul>
+                <li style="margin-left: 20px; color: var(--text-muted); margin-bottom: 10px;">Cada secuencia <code>../</code> permite retroceder un nivel dentro de la estructura de directorios. Su repetición permite ascender varios niveles, abandonar el directorio destinado a las imágenes e intentar alcanzar la raíz del sistema de archivos.</li>
+                <li style="margin-left: 20px; color: var(--text-muted);"><code>/etc/passwd</code> indica el archivo crítico del sistema Linux que se desea recuperar. En conjunto, el payload aprovecha la ausencia de una validación adecuada para construir una ruta que termina apuntando fuera del webroot.</li>
+            </ul>
+
+            <div class="img-container">
+                <img src="Imagenes/payload_usado.png" alt="Payload inyectado en el Repeater" class="evidencia-img">
+                <div class="caption">[ FIGURA 2: Inyección del payload en el parámetro filename a través de Burp Suite Repeater. ]</div>
+            </div>
+        </div>
+
+        <!-- 5. RESULTADOS Y CONFIRMACIÓN -->
+        <div class="report-section">
+            <h3>Respuesta Vulnerable y Confirmación</h3>
+            <p>Después de enviar la petición modificada, el servidor respondió con un <code>HTTP/2 200 OK</code> y devolvió en el cuerpo de la respuesta el contenido del archivo <code>/etc/passwd</code>.</p>
+            
+            <p>El resultado confirmó que la aplicación procesaba las secuencias de recorrido incluidas en <code>filename</code> sin restringir adecuadamente el acceso al directorio destinado a las imágenes. De esta manera fue posible acceder a un archivo del sistema ubicado fuera de la ruta autorizada.</p>
+
+            <div class="img-container">
+                <img src="Imagenes/respuesta_vuln.png" alt="Respuesta del servidor exponiendo /etc/passwd" class="evidencia-img">
+                <div class="caption">[ FIGURA 3: Respuesta vulnerable del servidor mostrando el contenido de /etc/passwd. ]</div>
+            </div>
+
+            <p>Finalmente, PortSwigger Web Security Academy reconoció la recuperación correcta del archivo solicitado y marcó el laboratorio como <strong>Solved</strong>, confirmando que el objetivo de la práctica había sido completado satisfactoriamente.</p>
+            
+            <div class="img-container">
+                <img src="Imagenes/lab_solved.png" alt="Confirmación de Lab Solved" class="evidencia-img" style="max-width: 600px; margin: 0 auto;">
+                <div class="caption">[ FIGURA 4: Confirmación oficial de la plataforma indicando "Lab Solved". ]</div>
+            </div>
+        </div>
+
+        <!-- 6. MITIGACIÓN -->
+        <div class="report-section">
+            <h3>Mitigación Recomendada</h3>
+            <p>La forma más efectiva de prevenir vulnerabilidades de Path Traversal es evitar pasar a las APIs del sistema de archivos cualquier entrada proporcionada por el usuario.</p>
+            <p>Si es estrictamente necesario utilizar entradas del usuario, se debe implementar una <strong>verificación con ruta canonical</strong>. La aplicación debe resolver la ruta absoluta del archivo solicitado (eliminando secuencias como <code>../</code>) y validar programáticamente que esta ruta limpia comience exclusivamente con el directorio base autorizado antes de procesar la solicitud.</p>
+        </div>
+
+        <!-- 7. ENTREGABLES -->
+        <div class="report-section">
+            <h3>Archivos Adjuntos (Entregables)</h3>
+            <p>A continuación se adjunta el documento correspondiente a este laboratorio</p>
+            
+            <div style="display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap;">
+                <a href="documento_actividad07.pdf" target="_blank" class="btn-download">
+                    Ver Informe / Presentación (.pdf)
+                </a>
+            </div>
+        </div>
+
+        <!-- 8. DATOS DEL LABORATORIO (METADATA) -->
+        <div class="meta-data-box">
+            <div class="meta-item">
+                <span class="meta-label">Nombre del Lab</span>
+                <span class="meta-value">File path traversal, simple case</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Nivel</span>
+                <span class="meta-value">Apprentice</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Tipo de Explotación</span>
+                <span class="meta-value">File Path Traversal</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Herramienta</span>
+                <span class="meta-value">Burp Suite (Repeater)</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Fecha de entrega</span>
+                <span class="meta-value">18 / 09 / 2026 - 23:59 p.m.</span>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p><strong>Sitio web protegido con Certificado de Seguridad (HTTPS)</strong>.</p>
+        <p><strong>&copy; 2026 David Campos Morado. CNO IV - Seguridad Informática</strong></p>
+    </footer>
+
+</body>
+</html>
