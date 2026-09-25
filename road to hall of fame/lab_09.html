@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reporte Actividad 09 | File Path Traversal</title>
+    <title>Reporte Actividad 09 | Non-Recursive Filter Evasion</title>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600;800&display=swap');
@@ -102,7 +102,6 @@
         }
         .btn-outline:hover { background: rgba(0, 255, 204, 0.1); box-shadow: 0 0 15px rgba(0, 255, 204, 0.2); }
 
-        /* ===== CAJA DE METADATOS ===== */
         .meta-data-box {
             background: transparent; 
             border: 1px dashed var(--locked-border); 
@@ -155,65 +154,91 @@
 
         <div class="report-section">
             <h3>Objetivo del Laboratorio</h3>
-            <p>Identificar y explotar una vulnerabilidad de File Path Traversal evadiendo un mecanismo de defensa no recursivo[cite: 58]. El objetivo es obtener acceso y leer el archivo <code>/etc/passwd</code> manipulando la carga de imágenes[cite: 58].</p>
+            <p>Explotar una vulnerabilidad de salto de directorio evadiendo el filtro de seguridad de la aplicación web, con el fin de exfiltrar el contenido del archivo <code>/etc/passwd</code> y obtener la confirmación de "Lab Solved".</p>
         </div>
 
         <div class="report-section">
-            <h3>Marco Teórico</h3>
-            <p><strong>File Path Traversal:</strong> Es una vulnerabilidad que permite a un atacante acceder a archivos y directorios almacenados fuera del directorio raíz web de la aplicación[cite: 58, 59].</p>
-            <p><strong>Filtro No Recursivo:</strong> Algunos entornos o servidores web implementan filtros que eliminan de forma automática las secuencias obvias de path traversal, como <code>../</code>[cite: 59]. Sin embargo, si este proceso de eliminación no es recursivo (es decir, el filtro se aplica solo una vez), un atacante puede crear secuencias anidadas (como <code>....//</code> o <code>..././</code>). Cuando el filtro elimina la secuencia central detectada, los caracteres restantes se unen formando un nuevo <code>../</code> válido, evadiendo así la restricción original[cite: 59]. Adicionalmente, el filtro puede fallar si la codificación de la URL no es estándar[cite: 60].</p>
+            <h3>Marco Teórico y Fundamentación Técnica</h3>
+            <p>La vulnerabilidad de <strong>File Path Traversal</strong> permite a un atacante manipular las variables de una página web para salirse de la carpeta pública del servidor y acceder a archivos restringidos del sistema.</p>
+            <p>Basándonos en el <strong>OWASP Top 10</strong>, este fallo entra en la categoría de <em>Broken Access Control</em>. Esto ocurre porque la aplicación confía en lo que ingresa el usuario sin verificar correctamente si tiene permisos para acceder a esos archivos.</p>
+            <p>En este laboratorio, el problema principal es que la defensa se implementó mal. Los desarrolladores intentaron evitar el salto de directorios usando una función que simplemente borra la secuencia <code>../</code>. El error lógico es que <strong>este filtro no es recursivo</strong>; limpia el texto una sola vez y no vuelve a revisar cómo quedó la cadena final.</p>
+            
+            <p><strong>Impacto en la Tríada CIA:</strong></p>
+            <ul style="margin-left: 20px; color: var(--text-muted);">
+                <li><strong>Confidencialidad (Crítico):</strong> Es el punto más afectado, ya que permite leer archivos muy sensibles del sistema (como los usuarios y configuraciones).</li>
+                <li><strong>Integridad (Bajo):</strong> En este caso casi no hay riesgo porque el ataque es solo de lectura, no estamos modificando ni borrando nada.</li>
+                <li><strong>Disponibilidad (Medio):</strong> Si se automatizan muchas peticiones hacia archivos pesados, se podría llegar a alentar o trabar el servidor.</li>
+            </ul>
         </div>
 
         <div class="report-section">
-            <h3>Desarrollo de la Práctica (Procedimiento y Evidencias)</h3>
+            <h3>Desarrollo Técnico (Procedimiento y Evidencias)</h3>
             
-            <p><strong>Paso 1: Análisis del entorno y objetivo</strong><br>
-            Se inició accediendo al laboratorio en Web Security Academy para comprender el contexto: la aplicación elimina de forma no recursiva las secuencias de salto de directorio[cite: 57]. El objetivo es leer <code>/etc/passwd</code>[cite: 57].</p>
+            <p><strong>Paso 1: Interceptación del tráfico</strong><br>
+            Empecé la práctica entrando a la página principal de la tienda, donde se veía que el laboratorio aún no estaba resuelto.</p>
 
             <div class="img-container">
-                <img src="Imagenes/Laboratorio_9/Actividad9_1.jpg" alt="Instrucciones del laboratorio" class="evidencia-img">
-                <div class="caption">[ FIGURA 1: Análisis del objetivo en Web Security Academy. ]</div>
+                <!-- Nota: asegúrate de que tus archivos sean .png o .jpg según corresponda en tu PC -->
+                <img src="Imagenes/Laboratorio_9/Actividad9_1.jpeg" alt="Página principal de la tienda" class="evidencia-img">
             </div>
 
-            <p><strong>Paso 2: Preparación e Intercepción con Burp Suite</strong><br>
-            Se inició Burp Suite y se navegó por el sitio de la tienda con el proxy activado. Se interceptó una petición <code>GET</code> que solicitaba una imagen a través del parámetro <code>filename</code> y se envió al módulo Repeater para su posterior análisis[cite: 61].</p>
+            <p><strong>Paso 2: Análisis del historial HTTP</strong><br>
+            Al navegar y ver los productos, estuve capturando el tráfico en segundo plano. Revisando el historial HTTP, encontré una petición GET que cargaba las imágenes y me di cuenta de que usaba el parámetro <code>filename</code>.</p>
 
             <div class="img-container">
-                <img src="Imagenes/Laboratorio_9/Actividad9_2.jpg" alt="Intercepción en Burp Suite" class="evidencia-img">
-                <div class="caption">[ FIGURA 2: Captura del tráfico HTTP en el Repeater mostrando la petición GET al endpoint /image. ]</div>
+                <img src="Imagenes/Laboratorio_9/Actividad9_4.jpeg" alt="Historial HTTP capturado" class="evidencia-img">
             </div>
+
+            <p><strong>Paso 3: Envío al Repeater</strong><br>
+            Mandé esta petición al Repeater para probarla normal y vi que efectivamente me regresaba la imagen con un estado <code>200 OK</code>.</p>
             
-            <p><strong>Paso 3: Explotación del Filtro No Recursivo</strong><br>
-            Sabiendo que el servidor elimina secuencias <code>../</code> pero no lo hace de manera recursiva, se diseñó un payload anidado. En lugar de usar <code>../../../etc/passwd</code>, se utilizó <code>....//....//....//etc/passwd</code>[cite: 61].</p>
+            <div class="img-container">
+                <img src="Imagenes/Laboratorio_9/Actividad9_5.jpeg" alt="Petición normal en el Repeater" class="evidencia-img">
+            </div>
+
+            <p><strong>Paso 4: Pruebas de Filtro y Armado del Payload</strong><br>
+            Para ver qué tipo de seguridad tenía el servidor, hice un par de pruebas. Primero intenté leer directamente el archivo <code>/etc/passwd</code> pero me marcó un error <code>400 Bad Request</code>. Después, intenté con un salto de directorio normal (<code>../../../../etc/passwd</code>), pero el servidor también lo bloqueó y me regresó el mismo error diciendo "No such file". Con esto confirmé que había un filtro borrando las secuencias <code>../</code>.</p>
         </div>
 
         <div class="report-section">
             <h3>Explicación del Payload y Resultados</h3>
             
-            <p><strong>Análisis del Payload:</strong></p>
-            <div class="code-block">GET /image?filename=....//....//....//etc/passwd HTTP/2</div>
+            <p><strong>Lógica del Payload:</strong></p>
+            <div class="code-block">GET /image?filename=....//....//....//....//etc/passwd</div>
             <ul style="margin-left: 20px; color: var(--text-muted); margin-bottom: 1.5rem;">
-                <li>El payload aprovecha la debilidad del filtro no recursivo[cite: 61].</li>
-                <li>Cuando el servidor procesa <code>....//</code>, detecta y elimina la secuencia interior <code>../</code>[cite: 61].</li>
-                <li>Los caracteres que quedan (el primer punto, el último punto y la barra final) se concatenan para formar un nuevo y válido <code>../</code>, logrando el salto de directorio esperado[cite: 61].</li>
+                <li>Para saltarme este filtro, aproveché que hace su trabajo una sola vez (no es recursivo).</li>
+                <li>Como el sistema solo busca y borra exactamente el texto <code>../</code>, al mandar la secuencia anidada <code>....//</code>, el filtro encuentra el <code>../</code> en el centro y lo elimina.</li>
+                <li>Al borrar el centro, los puntos y la diagonal que sobraban a los lados (<code>..</code> y <code>/</code>) se juntan solos. Así, el servidor termina procesando un <code>../</code> válido sin darse cuenta de que nos saltamos su seguridad.</li>
             </ul>
 
-            <p><strong>Resultados Obtenidos:</strong></p>
+            <p><strong>Resultados de Exfiltración:</strong></p>
             <ul style="margin-left: 20px; color: var(--text-muted); margin-bottom: 1.5rem;">
-                <li>Al enviar la petición modificada, el servidor devolvió un <code>HTTP/2 200 OK</code>[cite: 61].</li>
-                <li>La respuesta expuso el contenido completo del archivo <code>/etc/passwd</code>[cite: 61].</li>
-                <li>Esto confirma que el filtro no recursivo fue exitosamente evadido, permitiendo acceder a archivos críticos del sistema[cite: 61].</li>
+                <li>Inyecté este nuevo payload en el parámetro desde el Repeater. Gracias a que burlamos el filtro, la petición pudo retroceder en las carpetas.</li>
+                <li>El servidor contestó con un <code>HTTP/2 200 OK</code>, mostrándome todo el texto del archivo con los usuarios del sistema (<code>root:x:0:0...</code>).</li>
+                <li>Al revisar el navegador, la página ya me mostraba el letrero naranja de felicitaciones marcando oficialmente el laboratorio como "LAB Solved".</li>
             </ul>
 
             <div class="img-container">
-                <img src="Imagenes/Laboratorio_9/Actividad9_3.jpg" alt="Respuesta 200 OK con el payload" class="evidencia-img">
-                <div class="caption">[ FIGURA 3: Respuesta del servidor mostrando el archivo /etc/passwd tras la evasión del filtro. ]</div>
+                <img src="Imagenes/Laboratorio_9/Actividad9_7.jpeg" alt="Respuesta 200 OK con el payload" class="evidencia-img">
+            </div>
+            
+            <div class="img-container">
+                <img src="Imagenes/Laboratorio_9/Actividad9_8.jpeg" alt="Confirmación de Lab Solved" class="evidencia-img">
             </div>
         </div>
 
         <div class="report-section">
-            <h3>Mitigación Recomendada</h3>
-            <p>Para prevenir esta vulnerabilidad, se recomienda no pasar entradas proporcionadas por el usuario a las API del sistema de archivos. Si es absolutamente necesario, la aplicación debe normalizar la entrada antes de validarla, resolviendo todas las secuencias relativas (como <code>../</code>) y asegurando que la ruta resultante resida dentro de un directorio base autorizado (por ejemplo, usando funciones como <code>realpath()</code>).</p>
+            <h3>Estrategias de Mitigación y Conclusión</h3>
+            <p>Para arreglar esta vulnerabilidad de forma correcta en el código, se recomiendan estas buenas prácticas:</p>
+            <ul style="margin-left: 20px; color: var(--text-muted); margin-bottom: 1.5rem;">
+                <li><strong>Usar Listas Blancas (Whitelisting):</strong> En lugar de intentar borrar lo que se ve peligroso (listas negras), es mejor validar que la entrada solo tenga caracteres permitidos y extensiones correctas (.jpg o .png).</li>
+                <li><strong>Validar la ruta real:</strong> El backend debe procesar cuál es la ruta absoluta final (usando funciones como <code>getCanonicalPath</code>) y asegurarse de que no se salga de la carpeta permitida.</li>
+                <li><strong>No usar nombres de archivos en la URL:</strong> Es más seguro usar un ID y que la base de datos se encargue de saber a qué archivo físico corresponde.</li>
+                <li><strong>Principio de Menor Privilegio:</strong> El servidor web no debería ejecutarse con permisos de administrador, impidiendo la lectura de archivos como <code>/etc/passwd</code> aunque exista la vulnerabilidad.</li>
+            </ul>
+            
+            <p><strong>Conclusión y Aprendizaje:</strong><br>
+            Con este laboratorio quedó muy claro que intentar proteger una página web usando listas negras o filtros simples (borrando caracteres malos) no es una buena idea. Ese error de limpiar el texto una sola vez deja una puerta abierta para que un atacante anide caracteres y logre engañar al sistema. El impacto de este pequeño descuido fue crítico, pasando de simplemente cargar una foto a leer todo el archivo de usuarios. La seguridad debe pensarse bien desde la estructura del código mediante reglas estrictas.</p>
         </div>
 
         <div class="adjuntos-box">
@@ -238,7 +263,7 @@
             </div>
             <div class="meta-item">
                 <span class="meta-label">TIPO DE EXPLOTACIÓN</span>
-                <span class="meta-value">File Path Traversal (Non-Recursive Filter Evasion)</span>
+                <span class="meta-value">File Path Traversal (Evasión de Filtro No Recursivo)</span>
             </div>
             <div class="meta-item">
                 <span class="meta-label">HERRAMIENTA</span>
@@ -246,7 +271,7 @@
             </div>
             <div class="meta-item">
                 <span class="meta-label">FECHA DE ENTREGA</span>
-                <span class="meta-value">25 / 09 / 2026 - 23:59 p.m.</span>
+                <span class="meta-value">24 / 09 / 2026 - 23:59 p.m.</span>
             </div>
         </div>
 
