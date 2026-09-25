@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte Actividad 12 | Null Byte Bypass</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600;800&display=swap');
+        :root { --bg-base: #050811; --cyber-teal: #00ffcc; --deep-blue: #0044ff; --locked-border: #233454; --text-main: #e2e8f0; --text-muted: #94a3b8; --font-tech: 'Fira Code', monospace; --font-body: 'Inter', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--bg-base); color: var(--text-main); font-family: var(--font-body); line-height: 1.6; background-image: linear-gradient(rgba(5, 8, 17, 0.85), rgba(5, 8, 17, 0.95)), radial-gradient(circle at top left, rgba(0, 255, 204, 0.05), transparent 40%); background-attachment: fixed; display: flex; flex-direction: column; min-height: 100vh; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 4%; background: rgba(5, 8, 17, 0.8); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(0, 255, 204, 0.15); position: fixed; width: 100%; top: 0; z-index: 100; }
+        .logo-area h1 { font-family: var(--font-tech); font-size: 1.1rem; color: var(--text-main); }
+        .logo-area span { color: var(--cyber-teal); }
+        .nav-container { display: flex; align-items: center; gap: 2rem; }
+        .nav-inicio { color: var(--text-main); text-decoration: none; font-family: var(--font-tech); transition: color 0.3s; }
+        .nav-inicio:hover { color: var(--cyber-teal); }
+        .btn-back-nav { color: var(--cyber-teal); font-family: var(--font-tech); text-decoration: none; border: 1px solid var(--cyber-teal); padding: 0.6rem 1.2rem; border-radius: 4px; transition: all 0.3s; font-size: 0.9rem; background: transparent; }
+        .btn-back-nav:hover { background: rgba(0, 255, 204, 0.1); box-shadow: 0 0 10px rgba(0, 255, 204, 0.3); }
+        main { flex: 1; padding: 10rem 2rem 4rem; max-width: 1000px; margin: 0 auto; width: 100%; }
+        .hero-section { margin-bottom: 4rem; border-bottom: 1px solid rgba(0, 255, 204, 0.2); padding-bottom: 3rem; }
+        .breadcrumb { font-family: var(--font-tech); color: var(--text-muted); font-size: 0.85rem; letter-spacing: 1px; margin-bottom: 1.5rem; text-transform: uppercase; }
+        .act-badge { display: inline-block; background: rgba(0, 255, 204, 0.1); color: var(--cyber-teal); font-family: var(--font-tech); padding: 0.3rem 0.8rem; border-left: 3px solid var(--cyber-teal); margin-bottom: 1.5rem; font-size: 0.9rem; letter-spacing: 2px; }
+        .hero-section h2 { font-family: 'Inter', sans-serif; font-weight: 800; color: #ffffff; font-size: 3.5rem; line-height: 1.1; margin-bottom: 1.5rem; letter-spacing: -1px; }
+        .hero-desc { font-size: 1.15rem; color: var(--text-muted); max-width: 800px; line-height: 1.8; }
+        .report-section { background: linear-gradient(135deg, rgba(10, 15, 30, 0.6) 0%, rgba(5, 8, 17, 0.8) 100%); border: 1px solid var(--locked-border); border-left: 3px solid var(--deep-blue); padding: 2.5rem; margin-bottom: 2.5rem; border-radius: 8px; backdrop-filter: blur(10px); transition: all 0.3s ease; }
+        .report-section:hover { box-shadow: 0 5px 25px rgba(0, 68, 255, 0.15); border-left-color: var(--cyber-teal); }
+        .report-section h3 { font-family: var(--font-tech); color: var(--cyber-teal); font-size: 1.4rem; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid rgba(0, 255, 204, 0.1); padding-bottom: 0.5rem; }
+        .report-section h3::before { content: '>'; color: var(--deep-blue); font-weight: bold; }
+        .report-section p { margin-bottom: 1.2rem; text-align: justify; }
+        .code-block { background: #000; border-left: 3px solid var(--deep-blue); padding: 1rem; font-family: var(--font-tech); color: #fff; overflow-x: auto; margin: 1.5rem 0; border-radius: 0 4px 4px 0; font-size: 0.95rem; }
+        .img-container { margin: 2rem 0; border: 1px solid var(--locked-border); border-radius: 6px; overflow: hidden; background: #000; padding: 0.5rem; }
+        .evidencia-img { width: 100%; height: auto; display: block; border-radius: 4px; }
+        .caption { text-align: center; font-family: var(--font-tech); font-size: 0.85rem; color: var(--text-muted); padding-top: 0.8rem; }
+        .adjuntos-box { background: rgba(5, 8, 17, 0.6); border: 1px solid var(--locked-border); border-left: 3px solid var(--cyber-teal); padding: 2.5rem; border-radius: 8px; margin-bottom: 2.5rem; }
+        .adjuntos-title { font-family: var(--font-tech); color: var(--cyber-teal); font-size: 1.4rem; margin-bottom: 1.5rem; }
+        .adjuntos-title span { color: var(--deep-blue); margin-right: 8px; }
+        .btn-outline { display: inline-block; text-decoration: none; font-family: var(--font-tech); font-weight: 600; color: var(--cyber-teal); border: 1px solid var(--cyber-teal); padding: 0.8rem 1.5rem; border-radius: 6px; transition: all 0.3s; background: transparent; }
+        .btn-outline:hover { background: rgba(0, 255, 204, 0.1); box-shadow: 0 0 15px rgba(0, 255, 204, 0.2); }
+        .meta-data-box { background: transparent; border: 1px dashed var(--locked-border); border-radius: 8px; padding: 2.5rem; margin-top: 3rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+        .meta-item { display: flex; flex-direction: column; gap: 0.5rem; }
+        .meta-label { font-family: var(--font-tech); color: var(--cyber-teal); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
+        .meta-value { color: #fff; font-size: 1.05rem; font-weight: 600; }
+        footer { text-align: center; padding: 2rem; background: rgba(5, 8, 17, 0.8); border-top: 1px solid rgba(0, 255, 204, 0.1); margin-top: 4rem; }
+        footer p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 0.5rem; }
+        footer p strong { color: #fff; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-area"><h1>UPSLP <span>|</span> CNO IV - Programación WAP</h1></div>
+        <nav class="nav-container">
+            <a href="../index.html" class="nav-inicio">Inicio</a>
+            <a href="road_to_hall_of_fame.html" class="btn-back-nav">&laquo; Volver al Roadmap</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="hero-section">
+            <div class="breadcrumb">PORTAFOLIO / ROAD TO HALL OF FAME / LAB 12</div>
+            <div class="act-badge">ACTIVIDAD 12</div>
+            <h2>LAB: FILE PATH TRAVERSAL VALIDATION OF FILE EXTENSION WITH NULL BYTE BYPASS</h2>
+            <p class="hero-desc">Autor: David Campos Morado - 183511 | Ingeniería en Tecnologías de la Información<br>Profesor: Servando Lopez Contreras</p>
+        </div>
+
+        <div class="report-section">
+            <h3>Objetivo del Laboratorio</h3>
+            <p>Evadir el filtro de seguridad que exige una extensión de archivo específica, utilizando un byte nulo (<code>%00</code>) para truncar la ruta, lograr leer el archivo <code>/etc/passwd</code> y conseguir el "Lab Solved".</p>
+        </div>
+
+        <div class="report-section">
+            <h3>Marco Teórico y Fundamentación Técnica</h3>
+            <p>La defensa de los desarrolladores en este laboratorio fue asegurarse de que cualquier archivo solicitado termine exactamente con la extensión correcta (por ejemplo, <code>.jpg</code> o <code>.png</code>). El problema es que esta validación es superficial y no tiene en cuenta cómo funcionan las APIs del sistema operativo subyacente.</p>
+            <p>En lenguajes basados en C o en APIs de sistemas operativos a bajo nivel, el <strong>Byte Nulo (<code>%00</code> en formato URL) es un indicador de terminación de cadena (null-terminator)</strong>.</p>
+            <p><strong>Impacto en la Tríada CIA:</strong></p>
+            <ul style="margin-left: 20px; color: var(--text-muted);">
+                <li><strong>Confidencialidad (Crítico):</strong> Engañar al sistema para leer archivos restringidos.</li>
+                <li><strong>Integridad (Bajo):</strong> Ataque de lectura, no altera archivos.</li>
+                <li><strong>Disponibilidad (Medio):</strong> Abuso automatizado podría degradar rendimiento.</li>
+            </ul>
+        </div>
+
+        <div class="report-section">
+            <h3>Desarrollo Técnico (Procedimiento y Evidencias)</h3>
+            <p><strong>Paso 1: Interceptación del tráfico</strong><br>Mientras navegaba por los productos, busqué en el historial HTTP de Burp Suite la petición GET encargada de cargar las imágenes mediante el parámetro <code>filename</code> y confirmé que cargaba correctamente con un 200 OK (ej. <code>filename=7.jpg</code>).</p>
+            <div class="img-container">
+                <img src="Imagenes/Laboratorio_12/Actividad12_3.jpeg" alt="Intercepción en Burp Suite" class="evidencia-img">
+            </div>
+
+            <p><strong>Paso 2: Pruebas de seguridad y bloqueos</strong><br>Intenté pedir directamente el archivo <code>/etc/passwd</code> y también un salto de directorio normal (<code>../../../../etc/passwd</code>) sin la extensión correcta. Ambos fallaron con error <code>400 Bad Request</code>, demostrando que el servidor valida que el texto termine con la extensión válida.</p>
+            <div class="img-container">
+                <img src="Imagenes/Laboratorio_12/Actividad12_5.jpeg" alt="Error al pedir archivo sin extensión" class="evidencia-img">
+            </div>
+        </div>
+
+        <div class="report-section">
+            <h3>Explicación del Payload y Resultados</h3>
+            <p><strong>Lógica del Payload con Byte Nulo:</strong></p>
+            <div class="code-block">GET /image?filename=../../../etc/passwd%00.jpg</div>
+            <ul style="margin-left: 20px; color: var(--text-muted); margin-bottom: 1.5rem;">
+                <li><strong>El engaño (Validación web):</strong> El filtro de la página revisa el final del texto. Como ve que termina en <code>.jpg</code>, lo aprueba creyendo que es una imagen inofensiva.</li>
+                <li><strong>La explotación (Sistema Operativo):</strong> La aplicación pasa esta cadena al sistema de archivos. Al leer la ruta, el sistema salta directorios hasta <code>etc/passwd</code>, y de repente encuentra el <code>%00</code> (byte nulo). El sistema asume que ahí terminó el nombre del archivo y descarta todo lo que sigue (ignorando el <code>.jpg</code>). Al final, abre únicamente <code>../../../etc/passwd</code>.</li>
+            </ul>
+
+            <p><strong>Resultados Obtenidos:</strong></p>
+            <ul style="margin-left: 20px; color: var(--text-muted); margin-bottom: 1.5rem;">
+                <li>El sistema ignoró la extensión y ejecutó los saltos de directorio de forma exitosa.</li>
+                <li>Respondió con un <code>HTTP/2 200 OK</code>, exponiendo todo el archivo de usuarios del sistema.</li>
+                <li>Apareció el banner de "Lab Solved".</li>
+            </ul>
+            <div class="img-container">
+                <img src="Imagenes/Laboratorio_12/Actividad12_7.jpeg" alt="Exfiltración usando Byte Nulo" class="evidencia-img">
+            </div>
+        </div>
+
+        <div class="report-section">
+            <h3>Estrategias de Mitigación y Conclusión</h3>
+            <p>Para tapar esta vulnerabilidad estructural, se deben aplicar las siguientes defensas:</p>
+            <ul style="margin-left: 20px; color: var(--text-muted); margin-bottom: 1.5rem;">
+                <li><strong>Rechazar Bytes Nulos:</strong> La aplicación debe sanitizar y rechazar cualquier solicitud con un byte nulo (<code>%00</code>, <code>\0</code>).</li>
+                <li><strong>Validación estricta de extensión:</strong> Validar con expresiones regulares estrictas (ej. <code>^[a-zA-Z0-9]+\.jpg$</code>).</li>
+                <li><strong>Canonicalización de rutas:</strong> Convertir la ruta a su forma absoluta final para comprobar que no salga del directorio base.</li>
+            </ul>
+            <p><strong>Aprendizaje Técnico:</strong> Burlar esta seguridad fue posible engañando al filtro pasándole la extensión que quería ver, pero usando el Byte Nulo forzamos al sistema de archivos a truncar la cadena. En el desarrollo seguro, las protecciones deben contemplar cómo interactúan las distintas capas tecnológicas (código web, servidor y OS).</p>
+        </div>
+
+        <div class="adjuntos-box">
+            <div class="adjuntos-title"><span>> ></span> Archivos Adjuntos (Entregables)</div>
+            <div class="adjuntos-buttons">
+                <a href="Lospdfs/Laboratorio_12_David_Campos_Morado.pdf" target="_blank" class="btn-outline">Ver Informe / Presentación (.pdf)</a>
+            </div>
+        </div>
+
+        <div class="meta-data-box">
+            <div class="meta-item"><span class="meta-label">NOMBRE DEL LAB</span><span class="meta-value">File path traversal, validation of file extension with null byte bypass</span></div>
+            <div class="meta-item"><span class="meta-label">NIVEL</span><span class="meta-value">Practitioner</span></div>
+            <div class="meta-item"><span class="meta-label">TIPO DE EXPLOTACIÓN</span><span class="meta-value">File Path Traversal (Null Byte Bypass)</span></div>
+            <div class="meta-item"><span class="meta-label">HERRAMIENTA</span><span class="meta-value">Burp Suite (Repeater)</span></div>
+            <div class="meta-item"><span class="meta-label">FECHA DE ENTREGA</span><span class="meta-value">28 / 09 / 2026 - 22:00 p.m.</span></div>
+        </div>
+    </main>
+
+    <footer>
+        <p><strong>Sitio web protegido con Certificado de Seguridad (HTTPS)</strong>.</p>
+        <p><strong>&copy; 2026 David Campos Morado. CNO IV - Seguridad Informática</strong></p>
+    </footer>
+</body>
+</html>

@@ -51,7 +51,6 @@
         .nav-inicio { color: var(--text-main); text-decoration: none; font-family: var(--font-tech); transition: color 0.3s; }
         .nav-inicio:hover { color: var(--cyber-teal); }
 
-        /* Título central (ya no es enlace) */
         .nav-fame {
             position: absolute; left: 50%; transform: translateX(-50%);
             color: var(--cyber-teal); font-family: var(--font-tech); font-size: 1.2rem;
@@ -71,29 +70,17 @@
             border: 1px solid rgba(0, 255, 204, 0.1); border-radius: 8px; z-index: 1; padding: 0.5rem 0;
         }
         
-        /* Efectos del menú desplegable ajustados */
         .dropdown-content a { 
-            color: var(--text-muted); 
-            padding: 12px 20px; 
-            text-decoration: none; 
-            display: block; 
-            font-family: var(--font-tech); 
-            transition: all 0.3s ease; 
-            position: relative; 
-            transform-origin: left center; 
+            color: var(--text-muted); padding: 12px 20px; text-decoration: none; 
+            display: block; font-family: var(--font-tech); transition: all 0.3s ease; 
+            position: relative; transform-origin: left center; 
         }
         .dropdown:hover .dropdown-content { display: block; }
-        .dropdown-content a:hover { 
-            color: var(--cyber-teal); 
-            background: rgba(0, 255, 204, 0.05); 
-            transform: scale(1.05); 
-        }
+        .dropdown-content a:hover { color: var(--cyber-teal); background: rgba(0, 255, 204, 0.05); transform: scale(1.05); }
         .dropdown-content a::after {
             content: ''; position: absolute; width: 0; height: 2px; 
-            bottom: 8px; left: 20px;
-            background-color: var(--cyber-teal); 
-            box-shadow: 0 0 10px var(--cyber-teal); 
-            transition: width 0.3s ease;
+            bottom: 8px; left: 20px; background-color: var(--cyber-teal); 
+            box-shadow: 0 0 10px var(--cyber-teal); transition: width 0.3s ease;
         }
         .dropdown-content a:hover::after { width: calc(100% - 40px); }
 
@@ -102,8 +89,7 @@
         .title-glitch { 
             font-family: var(--font-tech); font-size: 3.5rem; text-align: center; 
             color: var(--cyber-teal); text-transform: uppercase; margin-bottom: 4rem;
-            text-shadow: 0 0 25px rgba(0, 255, 204, 0.5);
-            letter-spacing: 4px;
+            text-shadow: 0 0 25px rgba(0, 255, 204, 0.5); letter-spacing: 4px;
         }
 
         /* ================= RUTEO (ROADMAP) ================= */
@@ -111,8 +97,7 @@
 
         .roadmap::before {
             content: ''; position: absolute; top: 0; bottom: 0; left: 50%; width: 4px; transform: translateX(-50%);
-            /* Se actualizó el progreso del 25% al 55% */
-            background: linear-gradient(to bottom, var(--cyber-teal) 0%, var(--deep-blue) 55%, var(--locked-border) 55%, var(--locked-border) 100%);
+            background: linear-gradient(to bottom, var(--cyber-teal) 0%, var(--deep-blue) 100%, var(--locked-border) 100%, var(--locked-border) 100%);
             box-shadow: 0 0 20px rgba(0, 68, 255, 0.5); z-index: 0;
         }
 
@@ -120,34 +105,24 @@
         .node:nth-child(odd) { flex-direction: row-reverse; }
 
         .node-content {
-            width: 45%; background: rgba(5, 10, 20, 0.8);
-            border: 1px solid var(--locked-border); border-radius: 8px;
-            padding: 2.5rem; backdrop-filter: blur(12px);
+            width: 45%; background: rgba(5, 10, 20, 0.8); border: 1px solid var(--locked-border); 
+            border-radius: 8px; padding: 2.5rem; backdrop-filter: blur(12px);
             transition: all 0.4s ease; position: relative;
         }
 
         .node-point {
-            width: 34px; height: 34px; border-radius: 50%;
-            background: var(--bg-base); border: 4px solid var(--locked-border);
-            position: absolute; left: 50%; transform: translateX(-50%);
-            box-shadow: 0 0 15px rgba(0,0,0,0.8); z-index: 2; transition: all 0.4s;
+            width: 34px; height: 34px; border-radius: 50%; background: var(--bg-base); 
+            border: 4px solid var(--locked-border); position: absolute; left: 50%; 
+            transform: translateX(-50%); box-shadow: 0 0 15px rgba(0,0,0,0.8); z-index: 2; transition: all 0.4s;
         }
 
         /* ESTADOS DESBLOQUEADOS */
         .node.unlocked .node-content {
             border-color: var(--deep-blue); box-shadow: 0 10px 40px rgba(0, 68, 255, 0.2);
-            border-left: 4px solid var(--cyber-teal);
-            background: linear-gradient(135deg, rgba(10, 15, 30, 0.9) 0%, rgba(5, 8, 17, 0.95) 100%);
+            border-left: 4px solid var(--cyber-teal); background: linear-gradient(135deg, rgba(10, 15, 30, 0.9) 0%, rgba(5, 8, 17, 0.95) 100%);
         }
         .node.unlocked .node-content:hover { transform: translateY(-5px); border-color: var(--cyber-teal); box-shadow: 0 15px 50px rgba(0, 255, 204, 0.2); }
         .node.unlocked .node-point { border-color: var(--cyber-teal); background: var(--deep-blue); box-shadow: 0 0 25px var(--deep-blue), 0 0 45px var(--cyber-teal); }
-
-        /* ESTADOS BLOQUEADOS */
-        .node.locked .node-content { opacity: 0.5; border-style: dashed; }
-        .node.locked .node-content::after {
-            content: 'ACCESO DENEGADO'; position: absolute; top: 1rem; right: 1rem;
-            font-family: var(--font-tech); font-size: 0.75rem; color: var(--neon-pink); letter-spacing: 1px;
-        }
 
         .lab-activity { font-family: var(--font-tech); font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.8rem; letter-spacing: 2px; }
         .node.unlocked .lab-activity { color: var(--cyber-teal); text-shadow: 0 0 10px rgba(0, 255, 204, 0.3); }
@@ -155,26 +130,74 @@
 
         /* BOTONES */
         .node-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
-
         .btn {
             padding: 0.8rem 1.5rem; font-family: var(--font-tech); font-size: 0.85rem;
             font-weight: 600; text-transform: uppercase; text-decoration: none;
             border-radius: 4px; transition: all 0.3s; display: inline-flex; align-items: center; gap: 8px; letter-spacing: 1px;
         }
-
         .btn-download { background: transparent; color: var(--cyber-teal); border: 1px solid var(--cyber-teal); }
         .node.unlocked .btn-download:hover { background: var(--cyber-teal); color: #000; box-shadow: 0 0 20px rgba(0, 255, 204, 0.4); }
-
         .btn-link { background: rgba(0, 68, 255, 0.1); color: #fff; border: 1px solid var(--deep-blue); }
         .node.unlocked .btn-link:hover { background: var(--deep-blue); color: #fff; box-shadow: 0 0 20px rgba(0, 68, 255, 0.5); }
 
-        .node.locked .btn { pointer-events: none; border-color: var(--locked-border); color: var(--locked-border); background: transparent; }
+        /* ================= META FINAL Y TROFEO ================= */
+        .trophy-container { 
+            text-align: center; 
+            margin-top: 6rem; 
+            position: relative; 
+            z-index: 10; 
+            padding: 3rem 1rem;
+            background: radial-gradient(circle, var(--bg-base) 40%, transparent 75%);
+        }
+        
+        /* EFECTO DE CRECIMIENTO AL PASAR EL MOUSE */
+        .trophy-img {
+            width: 320px; 
+            max-width: 100%;
+            border-radius: 8px;
+            filter: drop-shadow(0 0 30px rgba(0, 255, 204, 0.4)); 
+            animation: float 3s ease-in-out infinite;
+            border: 1px solid var(--cyber-teal);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.4s;
+            cursor: pointer;
+        }
+        
+        .trophy-img:hover {
+            transform: scale(1.15) !important; /* Crece un 15% deteniendo el float temporalmente */
+            filter: drop-shadow(0 0 50px rgba(0, 255, 204, 0.9));
+        }
 
-        /* META FINAL */
-        .trophy-container { text-align: center; margin-top: 4rem; position: relative; z-index: 2; }
-        .trophy-text {
-            font-family: var(--font-tech); color: var(--cyber-teal); font-size: 2.5rem;
-            margin-top: 1rem; text-transform: uppercase; text-shadow: 0 0 30px rgba(0, 255, 204, 0.6); letter-spacing: 3px;
+        .trophy-text { 
+            font-family: var(--font-tech); 
+            color: var(--cyber-teal); 
+            font-size: 3.5rem; 
+            margin-top: 1.5rem; 
+            text-transform: uppercase; 
+            text-shadow: 0 0 30px rgba(0, 255, 204, 0.8); 
+            letter-spacing: 5px; 
+            font-weight: bold;
+        }
+        .trophy-message {
+            margin-top: 1.5rem;
+        }
+        .trophy-message h4 {
+            color: #fff;
+            font-family: var(--font-tech);
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            margin-bottom: 0.8rem;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+        .trophy-message p {
+            color: var(--text-muted);
+            font-size: 1.15rem;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        .trophy-message span {
+            color: var(--cyber-teal);
+            font-weight: 600;
         }
 
         @media (max-width: 768px) {
@@ -184,7 +207,16 @@
             .node-content { width: calc(100% - 70px); }
             .node-point { left: 30px; }
         }
+
+        @keyframes float { 
+            0% { transform: translateY(0px); } 
+            50% { transform: translateY(-15px); } 
+            100% { transform: translateY(0px); } 
+        }
     </style>
+    
+    <!-- LIBRERÍA DE CONFETI -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 <body>
 
@@ -192,17 +224,12 @@
         <div class="logo-area">
             <h1>UPSLP <span>|</span> CNO IV - Programación WAP</h1>
         </div>
-        
-        <!-- Título central sin enlace -->
         <div class="nav-fame">ROAD TO HALL OF FAME</div>
-        
         <nav class="nav-container">
-            <!-- Rutas ajustadas usando ../ para regresar a la raíz -->
             <a href="../index.html" class="nav-inicio">Inicio</a>
             <div class="dropdown">
                 <button class="dropbtn">&#9776;</button>
                 <div class="dropdown-content">
-                    <!-- Rutas ajustadas para entrar a las carpetas de los parciales desde la raíz -->
                     <a href="../Parcial_1/index.html">1er Parcial</a>
                     <a href="../Parcial_2/index.html">2do Parcial</a>
                     <a href="../Parcial_3/index.html">3er Parcial</a>
@@ -217,7 +244,6 @@
 
         <div class="roadmap">
             
-            <!-- LAB 7: DESBLOQUEADO (Actividad 08) -->
             <div class="node unlocked">
                 <div class="node-point"></div>
                 <div class="node-content">
@@ -230,7 +256,6 @@
                 </div>
             </div>
 
-            <!-- LAB 8: DESBLOQUEADO (Actividad 08) -->
             <div class="node unlocked">
                 <div class="node-point"></div>
                 <div class="node-content">
@@ -243,7 +268,6 @@
                 </div>
             </div>
 
-            <!-- LAB 3: DESBLOQUEADO (Actividad 09) -->
             <div class="node unlocked">
                 <div class="node-point"></div>
                 <div class="node-content">
@@ -256,56 +280,77 @@
                 </div>
             </div>
 
-            <div class="node locked">
+            <div class="node unlocked">
                 <div class="node-point"></div>
                 <div class="node-content">
                     <div class="lab-activity">ACTIVIDAD 10</div>
                     <h3 class="lab-title">LAB: FILE PATH TRAVERSAL SEQUENCES STRIPPED WITH SUPERFLUOUS URL-DECODE</h3>
                     <div class="node-actions">
-                        <a href="#" class="btn btn-download">↓ Descargar PDF</a>
-                        <a href="#" class="btn btn-link">➔ Ver Evidencia</a>
+                        <a href="Lospdfs/Laboratorio_10_David_Campos_Morado.pdf" download class="btn btn-download">↓ Descargar PDF</a>
+                        <a href="lab_10.html" class="btn btn-link">➔ Ver Evidencia</a>
                     </div>
                 </div>
             </div>
 
-            <div class="node locked">
+            <div class="node unlocked">
                 <div class="node-point"></div>
                 <div class="node-content">
                     <div class="lab-activity">ACTIVIDAD 11</div>
                     <h3 class="lab-title">LAB: FILE PATH TRAVERSAL VALIDATION OF START OF PATH</h3>
                     <div class="node-actions">
-                        <a href="#" class="btn btn-download">↓ Descargar PDF</a>
-                        <a href="#" class="btn btn-link">➔ Ver Evidencia</a>
+                        <a href="Lospdfs/Laboratorio_11_David_Campos_Morado.pdf" download class="btn btn-download">↓ Descargar PDF</a>
+                        <a href="lab_11.html" class="btn btn-link">➔ Ver Evidencia</a>
                     </div>
                 </div>
             </div>
 
-            <div class="node locked">
+            <div class="node unlocked">
                 <div class="node-point"></div>
                 <div class="node-content">
                     <div class="lab-activity">ACTIVIDAD 12</div>
                     <h3 class="lab-title">LAB: FILE PATH TRAVERSAL VALIDATION OF FILE EXTENSION WITH NULL BYTE BYPASS</h3>
                     <div class="node-actions">
-                        <a href="#" class="btn btn-download">↓ Descargar PDF</a>
-                        <a href="#" class="btn btn-link">➔ Ver Evidencia</a>
+                        <a href="Lospdfs/Laboratorio_12_David_Campos_Morado.pdf" download class="btn btn-download">↓ Descargar PDF</a>
+                        <a href="lab_12.html" class="btn btn-link">➔ Ver Evidencia</a>
                     </div>
                 </div>
             </div>
 
+            <!-- META FINAL: TROFEO Y FELICITACIÓN -->
             <div class="trophy-container">
-                <img src="Imagenes/logo.png" alt="Trofeo" style="width: 120px; filter: drop-shadow(0 0 20px var(--cyber-teal)); animation: float 3s ease-in-out infinite;">
+                <img src="Imagenes/logo.png" alt="Trofeo Hall of Fame" class="trophy-img" id="trofeoFinal">
                 <div class="trophy-text">Hall of Fame</div>
+                
+                <div class="trophy-message">
+                    <h4>¡MISIÓN CUMPLIDA!</h4>
+                    <p>Felicidades, <span>David Campos Morado</span>. Has explotado y documentado con éxito los 6 laboratorios de Path Traversal, demostrando un dominio técnico excepcional en ciberseguridad. Tu lugar en el Salón de la Fama está asegurado.</p>
+                </div>
             </div>
 
         </div>
     </main>
 
-    <style>
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
-        }
-    </style>
+    <!-- SCRIPT DE CONFETI AL PASAR EL MOUSE -->
+    <script>
+        const trofeo = document.getElementById('trofeoFinal');
+        
+        trofeo.addEventListener('mouseenter', () => {
+            // Confeti desde el lado izquierdo
+            confetti({
+                particleCount: 80,
+                spread: 70,
+                origin: { y: 0.6, x: 0 },
+                colors: ['#00ffcc', '#0044ff', '#ff0055', '#ffd700']
+            });
+            
+            // Confeti desde el lado derecho
+            confetti({
+                particleCount: 80,
+                spread: 70,
+                origin: { y: 0.6, x: 1 },
+                colors: ['#00ffcc', '#0044ff', '#ff0055', '#ffd700']
+            });
+        });
+    </script>
 </body>
 </html>
