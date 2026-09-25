@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte Actividad 09 | File Path Traversal</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600;800&display=swap');
+
+        :root {
+            --bg-base: #050811; 
+            --cyber-teal: #00ffcc; 
+            --deep-blue: #0044ff;  
+            --locked-dark: #121b2b;
+            --locked-border: #233454;
+            --text-main: #e2e8f0; 
+            --text-muted: #94a3b8; 
+            --font-tech: 'Fira Code', monospace; 
+            --font-body: 'Inter', sans-serif; 
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            background-image: 
+                linear-gradient(rgba(5, 8, 17, 0.85), rgba(5, 8, 17, 0.95)),
+                radial-gradient(circle at top left, rgba(0, 255, 204, 0.05), transparent 40%);
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.5rem 4%; background: rgba(5, 8, 17, 0.8);
+            backdrop-filter: blur(15px); border-bottom: 1px solid rgba(0, 255, 204, 0.15);
+            position: fixed; width: 100%; top: 0; z-index: 100;
+        }
+        .logo-area h1 { font-family: var(--font-tech); font-size: 1.1rem; color: var(--text-main); }
+        .logo-area span { color: var(--cyber-teal); }
+        
+        .nav-container { display: flex; align-items: center; gap: 2rem; }
+        .nav-inicio { color: var(--text-main); text-decoration: none; font-family: var(--font-tech); transition: color 0.3s; }
+        .nav-inicio:hover { color: var(--cyber-teal); }
+        
+        .btn-back-nav {
+            color: var(--cyber-teal); font-family: var(--font-tech); text-decoration: none; 
+            border: 1px solid var(--cyber-teal); padding: 0.6rem 1.2rem; border-radius: 4px; 
+            transition: all 0.3s; font-size: 0.9rem; background: transparent;
+        }
+        .btn-back-nav:hover { background: rgba(0, 255, 204, 0.1); box-shadow: 0 0 10px rgba(0, 255, 204, 0.3); }
+
+        main { flex: 1; padding: 10rem 2rem 4rem; max-width: 1000px; margin: 0 auto; width: 100%; }
+
+        .hero-section { margin-bottom: 4rem; border-bottom: 1px solid rgba(0, 255, 204, 0.2); padding-bottom: 3rem; }
+        .breadcrumb { font-family: var(--font-tech); color: var(--text-muted); font-size: 0.85rem; letter-spacing: 1px; margin-bottom: 1.5rem; text-transform: uppercase; }
+        .act-badge {
+            display: inline-block; background: rgba(0, 255, 204, 0.1); color: var(--cyber-teal); font-family: var(--font-tech);
+            padding: 0.3rem 0.8rem; border-left: 3px solid var(--cyber-teal); margin-bottom: 1.5rem; font-size: 0.9rem; letter-spacing: 2px;
+        }
+        .hero-section h2 { font-family: 'Inter', sans-serif; font-weight: 800; color: #ffffff; font-size: 3.5rem; line-height: 1.1; margin-bottom: 1.5rem; letter-spacing: -1px; }
+        .hero-desc { font-size: 1.15rem; color: var(--text-muted); max-width: 800px; line-height: 1.8; }
+
+        .report-section {
+            background: linear-gradient(135deg, rgba(10, 15, 30, 0.6) 0%, rgba(5, 8, 17, 0.8) 100%);
+            border: 1px solid var(--locked-border); border-left: 3px solid var(--deep-blue);
+            padding: 2.5rem; margin-bottom: 2.5rem; border-radius: 8px; backdrop-filter: blur(10px); transition: all 0.3s ease;
+        }
+        .report-section:hover { box-shadow: 0 5px 25px rgba(0, 68, 255, 0.15); border-left-color: var(--cyber-teal); }
+        .report-section h3 { font-family: var(--font-tech); color: var(--cyber-teal); font-size: 1.4rem; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid rgba(0, 255, 204, 0.1); padding-bottom: 0.5rem; }
+        .report-section h3::before { content: '>'; color: var(--deep-blue); font-weight: bold; }
+        .report-section p { margin-bottom: 1.2rem; text-align: justify; }
+        
+        .code-block {
+            background: #000; border-left: 3px solid var(--deep-blue);
+            padding: 1rem; font-family: var(--font-tech); color: #fff;
+            overflow-x: auto; margin: 1.5rem 0; border-radius: 0 4px 4px 0; font-size: 0.95rem;
+        }
+
+        .img-container { margin: 2rem 0; border: 1px solid var(--locked-border); border-radius: 6px; overflow: hidden; background: #000; padding: 0.5rem; }
+        .evidencia-img { width: 100%; height: auto; display: block; border-radius: 4px; }
+        .caption { text-align: center; font-family: var(--font-tech); font-size: 0.85rem; color: var(--text-muted); padding-top: 0.8rem; }
+
+        .adjuntos-box { background: rgba(5, 8, 17, 0.6); border: 1px solid var(--locked-border); border-left: 3px solid var(--cyber-teal); padding: 2.5rem; border-radius: 8px; margin-bottom: 2.5rem; }
+        .adjuntos-title { font-family: var(--font-tech); color: var(--cyber-teal); font-size: 1.4rem; margin-bottom: 1.5rem; }
+        .adjuntos-title span { color: var(--deep-blue); margin-right: 8px; }
+        .adjuntos-text { color: var(--text-main); margin-bottom: 2rem; }
+        .adjuntos-buttons { display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; }
+        
+        .btn-text-only { color: var(--text-main); font-family: var(--font-tech); font-weight: 600; text-decoration: none; transition: color 0.3s; }
+        .btn-text-only:hover { color: var(--cyber-teal); }
+        .btn-outline {
+            display: inline-block; text-decoration: none; font-family: var(--font-tech); font-weight: 600;
+            color: var(--cyber-teal); border: 1px solid var(--cyber-teal); padding: 0.8rem 1.5rem; border-radius: 6px;
+            transition: all 0.3s; background: transparent;
+        }
+        .btn-outline:hover { background: rgba(0, 255, 204, 0.1); box-shadow: 0 0 15px rgba(0, 255, 204, 0.2); }
+
+        /* ===== CAJA DE METADATOS ===== */
+        .meta-data-box {
+            background: transparent; 
+            border: 1px dashed var(--locked-border); 
+            border-radius: 8px; 
+            padding: 2.5rem; 
+            margin-top: 3rem; 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+            gap: 2rem;
+        }
+        .meta-item { display: flex; flex-direction: column; gap: 0.5rem; }
+        .meta-label { 
+            font-family: var(--font-tech); 
+            color: var(--cyber-teal); 
+            font-size: 0.85rem; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+        }
+        .meta-value { color: #fff; font-size: 1.05rem; font-weight: 600; }
+
+        @media (max-width: 768px) {
+            .meta-data-box { grid-template-columns: 1fr; }
+            .adjuntos-buttons { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+        }
+
+        footer { text-align: center; padding: 2rem; background: rgba(5, 8, 17, 0.8); border-top: 1px solid rgba(0, 255, 204, 0.1); margin-top: 4rem; }
+        footer p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 0.5rem; }
+        footer p strong { color: #fff; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <h1>UPSLP <span>|</span> CNO IV - Programación WAP</h1>
+        </div>
+        <nav class="nav-container">
+            <a href="../index.html" class="nav-inicio">Inicio</a>
+            <a href="road_to_hall_of_fame.html" class="btn-back-nav">&laquo; Volver al Roadmap</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="hero-section">
+            <div class="breadcrumb">PORTAFOLIO / ROAD TO HALL OF FAME / LAB 09</div>
+            <div class="act-badge">ACTIVIDAD 09</div>
+            <h2>LAB: FILE PATH TRAVERSAL, TRAVERSAL SEQUENCES STRIPPED NON-RECURSIVELY</h2>
+            <p class="hero-desc">Autor: David Campos Morado - 183511 | Ingeniería en Tecnologías de la Información<br>Profesor: Servando Lopez Contreras</p>
+        </div>
+
+        <div class="report-section">
+            <h3>Objetivo del Laboratorio</h3>
+            <p>Identificar y explotar una vulnerabilidad de File Path Traversal evadiendo un mecanismo de defensa no recursivo[cite: 58]. El objetivo es obtener acceso y leer el archivo <code>/etc/passwd</code> manipulando la carga de imágenes[cite: 58].</p>
+        </div>
+
+        <div class="report-section">
+            <h3>Marco Teórico</h3>
+            <p><strong>File Path Traversal:</strong> Es una vulnerabilidad que permite a un atacante acceder a archivos y directorios almacenados fuera del directorio raíz web de la aplicación[cite: 58, 59].</p>
+            <p><strong>Filtro No Recursivo:</strong> Algunos entornos o servidores web implementan filtros que eliminan de forma automática las secuencias obvias de path traversal, como <code>../</code>[cite: 59]. Sin embargo, si este proceso de eliminación no es recursivo (es decir, el filtro se aplica solo una vez), un atacante puede crear secuencias anidadas (como <code>....//</code> o <code>..././</code>). Cuando el filtro elimina la secuencia central detectada, los caracteres restantes se unen formando un nuevo <code>../</code> válido, evadiendo así la restricción original[cite: 59]. Adicionalmente, el filtro puede fallar si la codificación de la URL no es estándar[cite: 60].</p>
+        </div>
+
+        <div class="report-section">
+            <h3>Desarrollo de la Práctica (Procedimiento y Evidencias)</h3>
+            
+            <p><strong>Paso 1: Análisis del entorno y objetivo</strong><br>
+            Se inició accediendo al laboratorio en Web Security Academy para comprender el contexto: la aplicación elimina de forma no recursiva las secuencias de salto de directorio[cite: 57]. El objetivo es leer <code>/etc/passwd</code>[cite: 57].</p>
+
+            <div class="img-container">
+                <img src="Imagenes/Laboratorio_9/Actividad9_1.jpg" alt="Instrucciones del laboratorio" class="evidencia-img">
+                <div class="caption">[ FIGURA 1: Análisis del objetivo en Web Security Academy. ]</div>
+            </div>
+
+            <p><strong>Paso 2: Preparación e Intercepción con Burp Suite</strong><br>
+            Se inició Burp Suite y se navegó por el sitio de la tienda con el proxy activado. Se interceptó una petición <code>GET</code> que solicitaba una imagen a través del parámetro <code>filename</code> y se envió al módulo Repeater para su posterior análisis[cite: 61].</p>
+
+            <div class="img-container">
+                <img src="Imagenes/Laboratorio_9/Actividad9_2.jpg" alt="Intercepción en Burp Suite" class="evidencia-img">
+                <div class="caption">[ FIGURA 2: Captura del tráfico HTTP en el Repeater mostrando la petición GET al endpoint /image. ]</div>
+            </div>
+            
+            <p><strong>Paso 3: Explotación del Filtro No Recursivo</strong><br>
+            Sabiendo que el servidor elimina secuencias <code>../</code> pero no lo hace de manera recursiva, se diseñó un payload anidado. En lugar de usar <code>../../../etc/passwd</code>, se utilizó <code>....//....//....//etc/passwd</code>[cite: 61].</p>
+        </div>
+
+        <div class="report-section">
+            <h3>Explicación del Payload y Resultados</h3>
+            
+            <p><strong>Análisis del Payload:</strong></p>
+            <div class="code-block">GET /image?filename=....//....//....//etc/passwd HTTP/2</div>
+            <ul style="margin-left: 20px; color: var(--text-muted); margin-bottom: 1.5rem;">
+                <li>El payload aprovecha la debilidad del filtro no recursivo[cite: 61].</li>
+                <li>Cuando el servidor procesa <code>....//</code>, detecta y elimina la secuencia interior <code>../</code>[cite: 61].</li>
+                <li>Los caracteres que quedan (el primer punto, el último punto y la barra final) se concatenan para formar un nuevo y válido <code>../</code>, logrando el salto de directorio esperado[cite: 61].</li>
+            </ul>
+
+            <p><strong>Resultados Obtenidos:</strong></p>
+            <ul style="margin-left: 20px; color: var(--text-muted); margin-bottom: 1.5rem;">
+                <li>Al enviar la petición modificada, el servidor devolvió un <code>HTTP/2 200 OK</code>[cite: 61].</li>
+                <li>La respuesta expuso el contenido completo del archivo <code>/etc/passwd</code>[cite: 61].</li>
+                <li>Esto confirma que el filtro no recursivo fue exitosamente evadido, permitiendo acceder a archivos críticos del sistema[cite: 61].</li>
+            </ul>
+
+            <div class="img-container">
+                <img src="Imagenes/Laboratorio_9/Actividad9_3.jpg" alt="Respuesta 200 OK con el payload" class="evidencia-img">
+                <div class="caption">[ FIGURA 3: Respuesta del servidor mostrando el archivo /etc/passwd tras la evasión del filtro. ]</div>
+            </div>
+        </div>
+
+        <div class="report-section">
+            <h3>Mitigación Recomendada</h3>
+            <p>Para prevenir esta vulnerabilidad, se recomienda no pasar entradas proporcionadas por el usuario a las API del sistema de archivos. Si es absolutamente necesario, la aplicación debe normalizar la entrada antes de validarla, resolviendo todas las secuencias relativas (como <code>../</code>) y asegurando que la ruta resultante resida dentro de un directorio base autorizado (por ejemplo, usando funciones como <code>realpath()</code>).</p>
+        </div>
+
+        <div class="adjuntos-box">
+            <div class="adjuntos-title"><span>> ></span> Archivos Adjuntos (Entregables)</div>
+            <p class="adjuntos-text">Para cumplir con los requerimientos de auditoría y revisión de código, a continuación se adjuntan los archivos correspondientes a la práctica:</p>
+            
+            <div class="adjuntos-buttons">
+                <a href="Lospdfs/Laboratorio_9_David_Campos_Morado.pdf" target="_blank" class="btn-outline">
+                    Ver Informe / Presentación (.pdf)
+                </a>
+            </div>
+        </div>
+
+        <div class="meta-data-box">
+            <div class="meta-item">
+                <span class="meta-label">NOMBRE DEL LAB</span>
+                <span class="meta-value">File path traversal, traversal sequences stripped non-recursively</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">NIVEL</span>
+                <span class="meta-value">Practitioner</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">TIPO DE EXPLOTACIÓN</span>
+                <span class="meta-value">File Path Traversal (Non-Recursive Filter Evasion)</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">HERRAMIENTA</span>
+                <span class="meta-value">Burp Suite (Repeater)</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">FECHA DE ENTREGA</span>
+                <span class="meta-value">25 / 09 / 2026 - 23:59 p.m.</span>
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        <p><strong>Sitio web protegido con Certificado de Seguridad (HTTPS)</strong>.</p>
+        <p><strong>&copy; 2026 David Campos Morado. CNO IV - Seguridad Informática</strong></p>
+    </footer>
+
+</body>
+</html>
