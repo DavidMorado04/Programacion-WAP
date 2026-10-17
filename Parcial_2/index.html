@@ -107,6 +107,38 @@
 
         .cyber-card:hover::before { background: linear-gradient(225deg, rgba(176, 38, 255, 0.3) 50%, transparent 50%); }
 
+        /* Estilo especial para la tarjeta del proyecto */
+        .project-card {
+            border-left: 4px solid var(--neon-gold);
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.85) 0%, rgba(5, 9, 20, 0.9) 100%);
+        }
+        
+        .project-card:hover {
+            border-left: 4px solid #fff;
+            border-color: rgba(255, 215, 0, 0.4); box-shadow: 0 15px 35px rgba(255, 215, 0, 0.2);
+        }
+        
+        .project-card .card-header {
+            color: var(--neon-gold);
+        }
+        
+        .project-card .cyber-tag {
+            border-color: var(--neon-gold);
+            color: var(--neon-gold);
+            box-shadow: inset 0 0 10px rgba(255, 215, 0, 0.1);
+        }
+        
+        .project-card .cyber-button {
+            color: var(--neon-gold);
+            border-color: var(--neon-gold);
+        }
+        
+        .project-card .cyber-button:hover {
+            background: var(--neon-gold);
+            color: #000;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+        }
+        
         .card-header {
             font-family: var(--font-tech); font-size: 0.9rem; color: var(--neon-cyan);
             letter-spacing: 2px; display: flex; align-items: center;
@@ -191,6 +223,22 @@
         <h2 class="section-title">Segundo Parcial</h2>
 
         <div class="activities-grid">
+        
+            <!-- TARJETA DEL PROYECTO PR02 -->
+            <div class="cyber-card project-card">
+                <div class="card-header"><span>PROYECTO_PR02</span></div>
+                <h3 class="card-title">Blindando la información: Gobernanza y Cumplimiento</h3>
+                <p class="card-desc">Proyecto integral sobre INTERAFAS-LAB, asumiendo roles de auditoría técnica y gestión de crisis para evaluar la postura de ciberseguridad, documentar vulnerabilidades y proponer controles basados en ISO/IEC 27001.</p>
+                <div class="cyber-tags">
+                    <span class="cyber-tag">ISO 27001</span>
+                    <span class="cyber-tag">Gestión de Crisis</span>
+                    <span class="cyber-tag">Pentesting</span>
+                </div>
+                <div class="card-footer">
+                    <a href="Proyecto/proyecto_pr02.html" class="cyber-button">Mostrar proyecto</a>
+                </div>
+            </div>
+
             <!-- TARJETA FUTURISTA ACTIVIDAD 13 -->
             <div class="cyber-card">
                 <div class="card-header"><span>ACTIVIDAD_13</span></div>
