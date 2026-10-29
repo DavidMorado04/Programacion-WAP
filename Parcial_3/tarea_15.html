@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte Actividad 15 | CNO IV</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600&display=swap');
+
+        :root {
+            --bg-base: #0a0d14;
+            --neon-cyan: #00f0ff;
+            --neon-purple: #b026ff;
+            --dark-purple: #9d00ff;
+            --dark-purple-glow: rgba(157, 0, 255, 0.7);
+            --hover-violet: #d8b4fe;
+            --neon-gold: #ffd700;
+            --text-main: #e2e8f0;
+            --text-muted: #8b949e;
+            --font-tech: 'Fira Code', monospace;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(ellipse at 0% 0%, rgba(176, 38, 255, 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 100% 0%, rgba(0, 240, 255, 0.10) 0%, transparent 50%),
+                radial-gradient(ellipse at 100% 100%, rgba(255, 138, 0, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 0% 100%, rgba(0, 102, 255, 0.12) 0%, transparent 50%);
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.5rem 4%; background: rgba(10, 13, 20, 0.7);
+            backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            position: fixed; width: 100%; top: 0; z-index: 100;
+        }
+        
+        .logo-area h1 { font-family: var(--font-tech); font-size: 1.1rem; color: var(--text-main); }
+        .logo-area span { color: var(--neon-cyan); }
+
+        .nav-container { display: flex; align-items: center; gap: 2rem; }
+        .nav-inicio { color: var(--text-main); text-decoration: none; font-family: var(--font-tech); transition: color 0.3s; position: relative; }
+        .nav-inicio:hover { color: var(--hover-violet); }
+
+        .dropdown { position: relative; display: inline-block; }
+        .dropbtn { background: transparent; color: var(--text-main); font-family: var(--font-tech); font-size: 1.5rem; border: none; cursor: pointer; padding: 0.5rem; transition: color 0.3s; }
+        .dropbtn:hover { color: var(--hover-violet); }
+
+        .dropdown-content {
+            display: none; position: absolute; right: 0;
+            background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(10px);
+            min-width: 200px; box-shadow: 0px 8px 20px 0px rgba(0,0,0,0.6);
+            border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; z-index: 1; padding: 0.5rem 0;
+        }
+        .dropdown-content a { color: var(--text-muted); padding: 12px 20px; text-decoration: none; display: block; font-family: var(--font-tech); transition: color 0.3s, background 0.3s; position: relative; }
+        .dropdown:hover .dropdown-content { display: block; }
+        .dropdown-content a:hover { color: var(--hover-violet); background: rgba(216, 180, 254, 0.05); }
+        .dropdown-content a::after {
+            content: ''; position: absolute; width: 0; height: 2px; bottom: 8px; left: 20px;
+            background-color: var(--dark-purple); box-shadow: 0 0 10px var(--dark-purple-glow); transition: width 0.3s ease;
+        }
+        .dropdown-content a:hover::after { width: calc(100% - 40px); }
+
+        main { flex: 1; padding: 8rem 2rem 4rem; max-width: 900px; margin: 0 auto; width: 100%; }
+
+        .report-header { text-align: center; margin-bottom: 3rem; }
+        .report-header h2 { font-family: var(--font-tech); color: var(--neon-cyan); font-size: 2.5rem; text-transform: uppercase; text-shadow: 0 0 15px rgba(0, 240, 255, 0.3); margin-bottom: 0.5rem; }
+        .report-header .subtitle { color: var(--neon-purple); font-family: var(--font-tech); font-size: 1.2rem; letter-spacing: 2px; }
+
+        .report-section {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.6) 0%, rgba(5, 9, 20, 0.7) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05); border-left: 3px solid var(--dark-purple);
+            padding: 2rem; margin-bottom: 2rem; border-radius: 8px; backdrop-filter: blur(10px); transition: all 0.3s ease;
+        }
+        .report-section:hover { border-left: 3px solid var(--neon-cyan); box-shadow: 0 5px 20px rgba(0, 240, 255, 0.1); }
+        
+        .report-section h3 { font-family: var(--font-tech); color: #fff; font-size: 1.5rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; }
+        .report-section h3::before { content: '>'; color: var(--neon-cyan); }
+        .report-section p, .report-section ul, .report-section ol { color: var(--text-muted); font-size: 1.1rem; line-height: 1.7; margin-bottom: 1rem; }
+        .report-section ul, .report-section ol { margin-left: 1.5rem; }
+        .report-section li { margin-bottom: 0.5rem; }
+        .report-section strong { color: var(--text-main); font-weight: 600; }
+        
+        pre { background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-left: 3px solid var(--hover-violet); padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin-bottom: 2rem; margin-top: 1rem; }
+        pre code { background: transparent; padding: 0; color: #a6accd; font-size: 0.85rem; font-family: var(--font-tech); }
+        code { background: rgba(0,0,0,0.5); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: var(--font-tech); color: var(--hover-violet); }
+
+        .data-list { list-style: none !important; margin-left: 0 !important; }
+        .data-list li { background: rgba(0,0,0,0.3); padding: 0.8rem 1.2rem; border-radius: 6px; border-left: 2px solid var(--neon-cyan); margin-bottom: 0.8rem !important; }
+        .data-list strong { color: var(--neon-gold); font-family: var(--font-tech); font-size: 0.95rem; }
+
+        .meta-data-box {
+            background: rgba(0, 0, 0, 0.4); border: 1px dashed rgba(255, 215, 0, 0.4);
+            border-radius: 8px; padding: 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+            margin-bottom: 2.5rem; margin-top: 2rem;
+        }
+        .metadata-item h4 { font-family: var(--font-tech); font-size: 0.8rem; color: var(--neon-gold); text-transform: uppercase; margin-bottom: 0.4rem; letter-spacing: 1px; }
+        .metadata-item p { color: #fff; font-weight: 600; font-size: 1rem; margin: 0; }
+
+        .buttons-container { display: flex; gap: 1.5rem; margin-top: 1rem; flex-wrap: wrap; }
+        .btn-descarga { display: inline-block; padding: 0.8rem 1.5rem; background: transparent; font-family: var(--font-tech); color: var(--neon-purple); border: 1px solid var(--neon-purple); border-radius: 4px; text-decoration: none; transition: all 0.3s; }
+        .btn-descarga:hover { background: rgba(176, 38, 255, 0.1); box-shadow: 0 0 15px rgba(176, 38, 255, 0.2); color: #fff; }
+
+        .back-link { display: inline-block; font-family: var(--font-tech); color: var(--neon-cyan); text-decoration: none; font-size: 1rem; transition: transform 0.3s; margin-bottom: 2rem; font-weight: bold; }
+        .back-link:hover { transform: translateX(-5px); text-shadow: 0 0 8px rgba(0, 240, 255, 0.4); }
+
+        footer { text-align: center; padding: 2rem; background: rgba(10, 13, 20, 0.6); border-top: 1px solid rgba(255, 255, 255, 0.05); }
+        footer p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 0.5rem; font-family: var(--font-body); }
+        footer p strong { color: #fff; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <h1>UPSLP <span>|</span> CNO IV - Programación WAP</h1>
+        </div>
+        <nav class="nav-container">
+            <a href="../index.html" class="nav-inicio">Inicio</a>
+            <div class="dropdown">
+                <button class="dropbtn">&#9776;</button>
+                <div class="dropdown-content">
+                    <a href="../Parcial_1/index.html">1er Parcial</a>
+                    <a href="../Parcial_2/index.html">2do Parcial</a>
+                    <a href="index.html">3er Parcial</a>
+                    <a href="../Final/index.html">Final</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="report-header">
+            <h2>REPORTE TÉCNICO</h2>
+            <div class="subtitle">ACTIVIDAD 15: LA FOTOGRAFÍA COMO TESTIGO</div>
+        </div>
+
+        <div class="report-section">
+            <h3>Objetivo de la actividad</h3>
+            <p>Extraer y analizar los metadatos de archivos de ofimática e imágenes mediante el uso de la herramienta de línea de comandos <strong>ExifTool</strong>. Esta práctica permite comprender el nivel de detalle oculto dentro de los ficheros digitales, facilitando labores de informática criminológica, OSINT y geolocalización a través de coordenadas GPS anidadas.</p>
+        </div>
+
+        <div class="report-section">
+            <h3>Parte I: Análisis de metadatos de fichero (.docx)</h3>
+            <p>Análisis forense ejecutado sobre el archivo de texto denominado <code>WOA database application form.docx</code>. A través de la terminal de comandos de PowerShell, se extrajeron los siguientes datos relevantes:</p>
+            
+            <ul class="data-list">
+                <li><strong>1. Categorización de archivo INTERPOL:</strong> Unclassified</li>
+                <li><strong>2. Template utilizado (INTERPOL):</strong> G03 Basic Doc SP.dotx</li>
+                <li><strong>3. Tiempo total de edición:</strong> 45 minutes</li>
+                <li><strong>4. Compañía propietaria:</strong> OIPC INTERPOL</li>
+                <li><strong>5. Última modificación por:</strong> Carolyn Lejeune</li>
+                <li><strong>6. Fecha de creación:</strong> 2019:05:03 15:35:00Z</li>
+                <li><strong>7. Creador original del fichero:</strong> Carolyn Lejeune</li>
+            </ul>
+        </div>
+
+        <div class="report-section">
+            <h3>Parte II: Extracción GPS de fichero de imagen (.jpg)</h3>
+            <p>Análisis ejecutado sobre la fotografía capturada por un dispositivo móvil, denominada <code>XiaomiMiA2Lite.jpg</code>. La extracción permitió triangular la ubicación exacta de la captura:</p>
+            
+            <ul class="data-list">
+                <li><strong>1. Apertura ISO utilizada:</strong> 100</li>
+                <li><strong>2. Longitud focal de la cámara:</strong> 3.8 mm</li>
+                <li><strong>3. Uso de Flash:</strong> Off, Did not fire</li>
+                <li><strong>4. Fecha de creación:</strong> 2020:05:28 18:11:41</li>
+                <li><strong>5. Geolocalización (Latitud GPS):</strong> 51 deg 15' 12.99" N</li>
+                <li><strong>6. Geolocalización (Longitud GPS):</strong> 0 deg 32' 21.93" W</li>
+                <li><strong>7. Ubicación física interpretada en mapa:</strong> Guildford, Reino Unido</li>
+            </ul>
+        </div>
+
+        <div class="report-section">
+            <h3>Parte III: Eliminación e higienización de metadatos</h3>
+            <p>Como contramedida defensiva, se procedió a la eliminación total de los metadatos (higienización) del archivo de muestra para proteger la privacidad y evitar filtraciones de información sensible (como ubicación y modelo de dispositivo).</p>
+            <p>Comando utilizado en ExifTool para limpiar la información del fichero:</p>
+            <pre><code>PS C:\Users\campo\Downloads\exiftool> .\exiftool.exe -all= archivo_muestra.jpg</code></pre>
+            <p>Tras la ejecución de este comando, la herramienta genera una copia limpia del archivo original y verifica que los datos de autoría y coordenadas GPS ya no sean accesibles.</p>
+        </div>
+
+        <div class="report-section" style="border-left: 3px solid var(--neon-gold);">
+            <h3 style="color: var(--neon-gold);">Archivos Adjuntos (Entregables)</h3>
+            <p>A continuación se adjunta el documento PDF con las capturas de pantalla de la terminal y los resultados en Google Maps correspondientes a esta actividad:</p>
+            <div class="buttons-container">
+                <!-- La ruta apunta a la carpeta Pdf/ como lo mostraste en tus capturas de pantalla -->
+                <a href="Pdf/CamposMoradoDavid-ACT15.pdf" target="_blank" class="btn-descarga">Ver Reporte en PDF</a>
+            </div>
+        </div>
+
+        <div class="meta-data-box">
+            <div class="metadata-item">
+                <h4>Asignatura</h4>
+                <p>CNO IV – Seguridad Informática</p>
+            </div>
+            <div class="metadata-item">
+                <h4>Tema Central</h4>
+                <p>Informática Criminológica y Metadatos</p>
+            </div>
+            <div class="metadata-item">
+                <h4>Tecnologías Base</h4>
+                <p>ExifTool, PowerShell, Metadatos EXIF</p>
+            </div>
+            <div class="metadata-item">
+                <h4>Docente</h4>
+                <p>Mtro. Servando López Contreras</p>
+            </div>
+            <div class="metadata-item">
+                <h4>Estudiante</h4>
+                <p>David Campos Morado (183511)</p>
+            </div>
+            <div class="metadata-item">
+                <h4>Fecha Límite de Entrega</h4>
+                <p>28/10/2026 - 23:59 horas</p>
+            </div>
+        </div>
+
+        <a href="index.html" class="back-link">&larr; Regresar a las actividades del Tercer Parcial</a>
+
+    </main>
+
+    <footer>
+        <p>Sitio web protegido con <strong>Certificado de Seguridad (HTTPS)</strong>.</p>
+        <p>&copy; 2026 David Campos Morado. CNO IV - Seguridad Informática</p>
+    </footer>
+
+</body>
+</html>
