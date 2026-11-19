@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte Proyecto PR03 | CNO IV</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600&display=swap');
+
+        :root {
+            --bg-base: #0a0d14;
+            --neon-cyan: #00f0ff;
+            --neon-purple: #b026ff;
+            --dark-purple: #9d00ff;
+            --dark-purple-glow: rgba(157, 0, 255, 0.7);
+            --hover-violet: #d8b4fe;
+            --neon-gold: #ffd700;
+            --text-main: #e2e8f0;
+            --text-muted: #8b949e;
+            --font-tech: 'Fira Code', monospace;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(ellipse at 0% 0%, rgba(176, 38, 255, 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 100% 0%, rgba(0, 240, 255, 0.10) 0%, transparent 50%),
+                radial-gradient(ellipse at 100% 100%, rgba(255, 138, 0, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 0% 100%, rgba(0, 102, 255, 0.12) 0%, transparent 50%);
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.5rem 4%; background: rgba(10, 13, 20, 0.7);
+            backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            position: fixed; width: 100%; top: 0; z-index: 100;
+        }
+        
+        .logo-area h1 { font-family: var(--font-tech); font-size: 1.1rem; color: var(--text-main); }
+        .logo-area span { color: var(--neon-cyan); }
+
+        .nav-container { display: flex; align-items: center; gap: 2rem; }
+        .nav-inicio { color: var(--text-main); text-decoration: none; font-family: var(--font-tech); transition: color 0.3s; position: relative; }
+        .nav-inicio:hover { color: var(--hover-violet); }
+
+        .dropdown { position: relative; display: inline-block; }
+        .dropbtn { background: transparent; color: var(--text-main); font-family: var(--font-tech); font-size: 1.5rem; border: none; cursor: pointer; padding: 0.5rem; transition: color 0.3s; }
+        .dropbtn:hover { color: var(--hover-violet); }
+
+        .dropdown-content {
+            display: none; position: absolute; right: 0;
+            background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(10px);
+            min-width: 200px; box-shadow: 0px 8px 20px 0px rgba(0,0,0,0.6);
+            border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; z-index: 1; padding: 0.5rem 0;
+        }
+        .dropdown-content a { color: var(--text-muted); padding: 12px 20px; text-decoration: none; display: block; font-family: var(--font-tech); transition: color 0.3s, background 0.3s; position: relative; }
+        .dropdown:hover .dropdown-content { display: block; }
+        .dropdown-content a:hover { color: var(--hover-violet); background: rgba(216, 180, 254, 0.05); }
+        .dropdown-content a::after {
+            content: ''; position: absolute; width: 0; height: 2px; bottom: 8px; left: 20px;
+            background-color: var(--dark-purple); box-shadow: 0 0 10px var(--dark-purple-glow); transition: width 0.3s ease;
+        }
+        .dropdown-content a:hover::after { width: calc(100% - 40px); }
+
+        main { flex: 1; padding: 8rem 2rem 4rem; max-width: 900px; margin: 0 auto; width: 100%; }
+
+        .report-header { text-align: center; margin-bottom: 3rem; }
+        .report-header h2 { font-family: var(--font-tech); color: var(--neon-cyan); font-size: 2.5rem; text-transform: uppercase; text-shadow: 0 0 15px rgba(0, 240, 255, 0.3); margin-bottom: 0.5rem; }
+        .report-header .subtitle { color: var(--neon-purple); font-family: var(--font-tech); font-size: 1.2rem; letter-spacing: 2px; text-transform: uppercase; }
+
+        .report-section {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.6) 0%, rgba(5, 9, 20, 0.7) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05); border-left: 3px solid var(--dark-purple);
+            padding: 2rem; margin-bottom: 2rem; border-radius: 8px; backdrop-filter: blur(10px); transition: all 0.3s ease;
+        }
+        .report-section:hover { border-left: 3px solid var(--neon-cyan); box-shadow: 0 5px 20px rgba(0, 240, 255, 0.1); }
+        
+        .report-section h3 { font-family: var(--font-tech); color: #fff; font-size: 1.5rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; }
+        .report-section h3::before { content: '>'; color: var(--neon-cyan); }
+        .report-section p, .report-section ul, .report-section ol { color: var(--text-muted); font-size: 1.1rem; line-height: 1.7; margin-bottom: 1rem; }
+        .report-section ul, .report-section ol { margin-left: 1.5rem; }
+        .report-section li { margin-bottom: 0.5rem; }
+        .report-section strong { color: var(--text-main); font-weight: 600; }
+        .report-section a.ref-link { color: var(--neon-cyan); text-decoration: none; word-break: break-all; }
+        .report-section a.ref-link:hover { text-decoration: underline; }
+        
+        .data-list { list-style: none !important; margin-left: 0 !important; }
+        .data-list li { background: rgba(0,0,0,0.3); padding: 0.8rem 1.2rem; border-radius: 6px; border-left: 2px solid var(--neon-cyan); margin-bottom: 0.8rem !important; }
+        .data-list strong { color: var(--neon-gold); font-family: var(--font-tech); font-size: 0.95rem; }
+
+        .meta-data-box {
+            background: rgba(0, 0, 0, 0.4); border: 1px dashed rgba(255, 215, 0, 0.4);
+            border-radius: 8px; padding: 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+            margin-bottom: 2.5rem; margin-top: 2rem;
+        }
+        .metadata-item h4 { font-family: var(--font-tech); font-size: 0.8rem; color: var(--neon-gold); text-transform: uppercase; margin-bottom: 0.4rem; letter-spacing: 1px; }
+        .metadata-item p { color: #fff; font-weight: 600; font-size: 1rem; margin: 0; }
+
+        .buttons-container { display: flex; gap: 1.5rem; margin-top: 1rem; flex-wrap: wrap; }
+        .btn-descarga { display: inline-block; padding: 0.8rem 1.5rem; background: transparent; font-family: var(--font-tech); color: var(--neon-purple); border: 1px solid var(--neon-purple); border-radius: 4px; text-decoration: none; transition: all 0.3s; }
+        .btn-descarga:hover { background: rgba(176, 38, 255, 0.1); box-shadow: 0 0 15px rgba(176, 38, 255, 0.2); color: #fff; }
+
+        .back-link { display: inline-block; font-family: var(--font-tech); color: var(--neon-cyan); text-decoration: none; font-size: 1rem; transition: transform 0.3s; margin-bottom: 2rem; font-weight: bold; }
+        .back-link:hover { transform: translateX(-5px); text-shadow: 0 0 8px rgba(0, 240, 255, 0.4); }
+
+        footer { text-align: center; padding: 2rem; background: rgba(10, 13, 20, 0.6); border-top: 1px solid rgba(255, 255, 255, 0.05); }
+        footer p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 0.5rem; font-family: var(--font-body); }
+        footer p strong { color: #fff; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <h1>UPSLP <span>|</span> CNO IV - Programación WAP</h1>
+        </div>
+        <nav class="nav-container">
+            <a href="../index.html" class="nav-inicio">Inicio</a>
+            <div class="dropdown">
+                <button class="dropbtn">&#9776;</button>
+                <div class="dropdown-content">
+                    <a href="../Parcial_1/index.html">1er Parcial</a>
+                    <a href="../Parcial_2/index.html">2do Parcial</a>
+                    <a href="index.html">3er Parcial</a>
+                    <a href="../Final/index.html">Final</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="report-header">
+            <h2>REPORTE PERICIAL</h2>
+            <div class="subtitle">PROYECTO PR03: OPERACIÓN NARCOS - EXPEDIENTE KOWHAI</div>
+        </div>
+
+        <div class="report-section">
+            <h3>Objetivo del proyecto</h3>
+            <p>Examinar la imagen forense de disco <code>Narcos-1</code> (equipo de escritorio <code>SK-DESKTOP</code> vinculado a Steve Kowhai) mediante <strong>Autopsy 4.23.1</strong>, con el fin de extraer evidencia digital verificable, reconstruir la línea de tiempo en zona horaria <strong>NZDT (UTC+13)</strong> y determinar qué actividades pueden demostrarse objetivamente en relación con el caso investigado.</p>
+        </div>
+
+        <div class="report-section">
+            <h3>Parte I: Extracción e Identificación de Evidencia Digital</h3>
+            <p>Se procesó la imagen RAW segmentada preservando la integridad de los archivos originales y configurando la fuente de datos en <code>Pacific/Auckland</code>. Entre los artefactos clave identificados destacan:</p>
+            
+            <ul class="data-list">
+                <li><strong>1. Sistema y Perfil:</strong> Windows 10 Pro versión 1809 (compilación 17763, AMD64), perfil principal <code>C:\Users\Steve</code> y clave <code>UserAssist</code> en <code>NTUSER.DAT</code>.</li>
+                <li><strong>2. Navegadores:</strong> Actividad en Google Chrome (<code>History</code>, MD5: <code>f3f979c6dee9fbb7cbdf5818aaa4b723</code>) y Microsoft Edge clásico (<code>WebCacheV01.dat</code>).</li>
+                <li><strong>3. Imágenes y Metadatos:</strong> Localización, fechas NZDT y hashes MD5 de <code>airport crystals.jpg</code>, <code>Method run.jpg</code>, <code>dropoff.jpg</code>, <code>flightbookings.PNG</code> y <code>BNE.png</code>.</li>
+                <li><strong>4. Herramientas y Artefactos:</strong> Instaladores de esteganografía (<code>Image Steganography 1.5.2 Setup.exe</code>) y cifrado (<code>TrueCrypt Setup 7.1a.exe</code>), caché de Discord y base de Windows Timeline (<code>ActivitiesCache.db</code>).</li>
+            </ul>
+        </div>
+
+        <div class="report-section">
+            <h3>Parte II: Investigación, Interpretación y Análisis del Caso</h3>
+            <p>Se correlacionaron los archivos de <code>Documents\Misc</code> y <code>Downloads\Misc</code> con flujos alternos <code>Zone.Identifier</code>, registros de <strong>Windows Prefetch</strong> y <code>ActivitiesCache.db</code>, diferenciando estrictamente lo observado de lo interpretado y evitando equiparar una descarga con su uso efectivo.</p>
+            <p>Los hallazgos sustentan una hipótesis de planeación logística (rutas entre el aeropuerto de Wellington, Petone y Eastbourne, ficha de Eastbourne Library como <code>dropoff</code>, cotización de vuelo Brisbane–Wellington para dos adultos y ejecución demostrada de Discord, TrueCrypt e Image Steganography), manteniendo abierta una explicación alternativa y señalando como evidencias adicionales necesarias el análisis del volcado de memoria RAM (<code>Narcos-Mem-1</code>) y registros externos vía judicial.</p>
+        </div>
+
+        <div class="report-section">
+            <h3>Referencias Bibliográficas</h3>
+            <ul class="data-list">
+                <li><strong>Referencia Obligatoria:</strong> Garfinkel, S., Farrell, P., Roussev, V., &amp; Dinolt, G. (2009). <em>Bringing Science to Digital Forensics with Standardized Forensic Corpora</em>. Digital Forensic Research Workshop (DFRWS), Montreal, Canadá. <a href="https://simson.net/clips/academic/2009.DFRWS.Corpora.pdf" target="_blank" class="ref-link">https://simson.net/clips/academic/2009.DFRWS.Corpora.pdf</a></li>
+                <li><strong>Escenario Forense:</strong> Digital Corpora. (2019). <em>2019 Narcos</em> [Escenario y conjunto de datos de práctica forense: imagen Narcos-1]. Digital Corpora. <a href="https://digitalcorpora.org/corpora/scenarios/2019-narcos/" target="_blank" class="ref-link">https://digitalcorpora.org/corpora/scenarios/2019-narcos/</a></li>
+                <li><strong>Herramienta Forense:</strong> Carrier, B. (s. f.). <em>Autopsy</em> (versión 4.23.1) [Software de análisis forense digital]. The Sleuth Kit. <a href="https://www.autopsy.com/" target="_blank" class="ref-link">https://www.autopsy.com/</a></li>
+            </ul>
+        </div>
+
+        <div class="report-section" style="border-left: 3px solid var(--neon-gold);">
+            <h3 style="color: var(--neon-gold);">Archivos Adjuntos (Entregables)</h3>
+            <p>A continuación se adjunta el informe pericial completo en PDF con la metodología, las 20 preguntas resueltas, capturas de Autopsy en zona horaria NZDT y referencias bibliográficas:</p>
+            <div class="buttons-container">
+                <a href="Pdf/DavidCamposMorado-PR3.pdf" target="_blank" class="btn-descarga">Ver Reporte en PDF</a>
+            </div>
+        </div>
+
+        <div class="meta-data-box">
+            <div class="metadata-item">
+                <h4>Asignatura</h4>
+                <p>CNO IV – Seguridad Informática</p>
+            </div>
+            <div class="metadata-item">
+                <h4>Tema Central</h4>
+                <p>Análisis Forense Digital (Expediente Kowhai)</p>
+            </div>
+            <div class="metadata-item">
+                <h4>Tecnologías Base</h4>
+                <p>Autopsy 4.23.1, Imágenes RAW, Prefetch, NTFS</p>
+            </div>
+            <div class="metadata-item">
+                <h4>Docente</h4>
+                <p>Mtro. Servando López Contreras</p>
+            </div>
+            <div class="metadata-item">
+                <h4>Estudiante</h4>
+                <p>David Campos Morado (183511)</p>
+            </div>
+            <div class="metadata-item">
+                <h4>Fecha Límite de Entrega</h4>
+                <p>18/11/2026 - 23:59 horas</p>
+            </div>
+        </div>
+
+        <a href="index.html" class="back-link">&larr; Regresar a las actividades del Tercer Parcial</a>
+
+    </main>
+
+    <footer>
+        <p>Sitio web protegido con <strong>Certificado de Seguridad (HTTPS)</strong>.</p>
+        <p>&copy; 2026 David Campos Morado. CNO IV - Seguridad Informática</p>
+    </footer>
+
+</body>
+</html>
